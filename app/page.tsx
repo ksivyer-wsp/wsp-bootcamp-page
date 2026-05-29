@@ -15,7 +15,7 @@ import { useState } from 'react';
 
 type LocationCode = 'new-york' | 'london';
 type LocationFilter = 'all' | LocationCode;
-type OptionId = '1' | '2' | '3' | '4' | '5.1' | '5.2' | '5.3' | '5.3.2' | '5.4' | '5.5';
+type OptionId = '1' | '2' | '3' | '4' | '5.1' | '5.2' | '5.3' | '5.3.2' | '5.4' | '5.4.2' | '5.5';
 
 type Camp = {
   id: string;
@@ -82,7 +82,7 @@ const CAMPS: Camp[] = [
     bestFor: 'Finance professionals seeking a comprehensive deep dive',
     description:
       'A 5-day in-person classroom program covering the full spectrum of valuation: financial modeling, DCF, M&A, comps, and LBO. Delivered in London by Financial Edge.',
-    thumbImg: 'https://media.fe.training/2023/05/cntomv7n-Open-Classroom-Thumbnails_London.png',
+    thumbImg: '/iStock-2241708789.jpg',
   },
   {
     id: 'londonAI',
@@ -781,7 +781,7 @@ const CHOICES: Choice[] = [
     format: 'In-Person',
     focus: ['Financial Modeling', 'Valuation', 'M&A', 'LBO'],
     price: 'From £3,200',
-    thumbImg: '/iStock-2152551306.jpg',
+    thumbImg: '/iStock-2241708789.jpg',
     href: 'https://www.fe.training/product/public-courses/comprehensive-modeling-and-valuation-masterclasses-july-london-copy/',
   },
   {
@@ -1117,6 +1117,86 @@ function Option54() {
 
 // ─── Option 5.5: Comparison cards with images ────────────────────────────────
 
+// ─── Option 5.4.2: Editorial + detail overlay ────────────────────────────────
+
+function Option542() {
+  return (
+    <div style={{ background: '#f6f8f9', minHeight: '100vh' }}>
+      <NewHero />
+      <div className="max-w-5xl mx-auto px-6 py-10">
+        <div className="grid md:grid-cols-3 gap-4">
+          {CHOICES.map(choice => (
+            <a
+              key={choice.id}
+              href={choice.href}
+              target={choice.href !== '#' ? '_blank' : undefined}
+              rel={choice.href !== '#' ? 'noopener noreferrer' : undefined}
+              className="block relative overflow-hidden group"
+              style={{ height: '560px', borderRadius: '3px' }}
+            >
+              {/* Background image — fills card, positioned to show key content */}
+              <div
+                className="absolute inset-0 transition-transform duration-500 group-hover:scale-105"
+                style={{ backgroundImage: `url(${choice.thumbImg})`, backgroundSize: 'cover', backgroundPosition: 'center 30%' }}
+              />
+              {/* Seamless fade: pure image at top → solid black at bottom */}
+              <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, #000000 0%, #000000 32%, rgba(0,0,0,0.6) 50%, rgba(0,0,0,0) 68%)' }} />
+
+              {/* Content */}
+              <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, padding: '24px' }} className="flex flex-col gap-2.5">
+                {/* Location */}
+                <div>
+                  <span style={{ fontSize: '13px', fontWeight: 700, color: '#fff', textTransform: 'uppercase', letterSpacing: '0.08em', background: choice.locationColor, opacity: 0.9, padding: '6px 14px', borderRadius: '2px', display: 'inline-block' }}>
+                    {choice.location}
+                  </span>
+                </div>
+
+                {/* Title */}
+                <h3 style={{ fontSize: '20px', fontWeight: 700, color: '#fff', lineHeight: 1.2 }}>
+                  {choice.title}
+                </h3>
+
+                {/* Compact metadata tags */}
+                <div className="flex flex-wrap gap-1.5">
+                  {[choice.duration, choice.format].map(tag => (
+                    <span key={tag} style={{ fontSize: '11px', fontWeight: 600, color: 'rgba(255,255,255,0.85)', background: 'rgba(255,255,255,0.12)', border: '1px solid rgba(255,255,255,0.2)', padding: '3px 9px', borderRadius: '2px' }}>
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+
+                {/* Differentiator */}
+                <p style={{ fontSize: '13px', color: 'rgba(255,255,255,0.6)', lineHeight: 1.5 }}>
+                  {choice.differentiator}
+                </p>
+
+                {/* Divider */}
+                <div style={{ borderTop: '1px solid rgba(255,255,255,0.15)', paddingTop: '12px', marginTop: '2px' }}>
+                  <div className="flex items-start justify-between gap-2">
+                    <div>
+                      <p style={{ fontSize: '10px', fontWeight: 700, color: 'rgba(255,255,255,0.5)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Next session</p>
+                      <p style={{ fontSize: '15px', fontWeight: 600, color: '#fff', marginTop: '2px' }}>{choice.nextDate}</p>
+                    </div>
+                    <div className="text-right">
+                      <p style={{ fontSize: '10px', fontWeight: 700, color: 'rgba(255,255,255,0.5)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Price from</p>
+                      <p style={{ fontSize: '15px', fontWeight: 600, color: '#fff', marginTop: '2px' }}>{choice.price.replace('From ', '')}</p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* CTA */}
+                <button style={{ marginTop: '4px', padding: '9px 18px', background: '#fff', color: '#1a1d22', fontSize: '13px', fontWeight: 700, borderRadius: '2px', border: 'none', cursor: 'pointer', alignSelf: 'flex-start' }}>
+                  View Details
+                </button>
+              </div>
+            </a>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
 function Option55() {
   return (
     <div style={{ background: '#f6f8f9', minHeight: '100vh' }}>
@@ -1215,7 +1295,7 @@ const OPTION_GROUPS: OptionGroup[] = [
   { groupId: '5.0', groupLabel: '5.0', versions: [{ id: '4', label: '5.0.1' }, { id: '5.5', label: '5.0.2' }] },
   { groupId: '5.1', groupLabel: '5.1', versions: [{ id: '5.1', label: '5.1.1' }] },
   { groupId: '5.3', groupLabel: '5.3', versions: [{ id: '5.3', label: '5.3.1' }, { id: '5.3.2', label: '5.3.2' }, { id: '5.2', label: '5.3.3' }] },
-  { groupId: '5.4', groupLabel: '5.4', versions: [{ id: '5.4', label: '5.4.1' }] },
+  { groupId: '5.4', groupLabel: '5.4', versions: [{ id: '5.4', label: '5.4.1' }, { id: '5.4.2', label: '5.4.2' }] },
 ];
 
 const ARCHIVED_OPTIONS: { id: OptionId; label: string }[] = [
@@ -1356,7 +1436,8 @@ export default function Page() {
       {active === '5.2' && <Option52 />}
       {active === '5.3'   && <Option53 />}
       {active === '5.3.2' && <Option532 />}
-      {active === '5.4' && <Option54 />}
+      {active === '5.4'   && <Option54 />}
+      {active === '5.4.2' && <Option542 />}
       {active === '5.5' && <Option55 />}
       {active === '1'   && <Option1 />}
       {active === '2'   && <Option2 />}
