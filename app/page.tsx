@@ -15,7 +15,7 @@ import { useState } from 'react';
 
 type LocationCode = 'new-york' | 'london';
 type LocationFilter = 'all' | LocationCode;
-type OptionId = '1' | '2' | '3' | '4' | '5.1' | '5.2' | '5.3' | '5.4' | '5.5';
+type OptionId = '1' | '2' | '3' | '4' | '5.1' | '5.2' | '5.3' | '5.3.2' | '5.4' | '5.5';
 
 type Camp = {
   id: string;
@@ -791,7 +791,7 @@ const CHOICES: Choice[] = [
     title: '2-Day AI-Intensive Modeling Session',
     provider: 'Financial Edge',
     poweredBy: true,
-    differentiator: 'No manual Excel. Built with AI-first workflows.',
+    differentiator: 'AI-first modeling. No manual Excel.',
     nextDate: 'Jul 20–21',
     duration: '2 Days',
     format: 'Virtual',
@@ -942,8 +942,8 @@ function Option53() {
               {/* Image with location badge overlay */}
               <div style={{ position: 'relative', height: '160px', backgroundImage: `url(${choice.thumbImg})`, backgroundSize: 'cover', backgroundPosition: 'center' }}>
                 <div style={{ position: 'absolute', inset: 0, background: 'rgba(0,0,0,0.3)' }} />
-                <div style={{ position: 'absolute', bottom: '12px', left: '16px' }}>
-                  <span style={{ fontSize: '11px', fontWeight: 700, color: '#fff', textTransform: 'uppercase', letterSpacing: '0.08em', background: choice.locationColor, padding: '4px 10px', borderRadius: '2px' }}>
+                <div style={{ position: 'absolute', bottom: '14px', left: '14px' }}>
+                  <span style={{ fontSize: '13px', fontWeight: 700, color: '#fff', textTransform: 'uppercase', letterSpacing: '0.08em', background: choice.locationColor, opacity: 0.9, padding: '6px 14px', borderRadius: '2px', display: 'inline-block' }}>
                     {choice.location}
                   </span>
                 </div>
@@ -988,11 +988,84 @@ function Option53() {
   );
 }
 
+// ─── Option 5.3.2: Comparison cards — compact tags + swapped order ───────────
+
+function Option532() {
+  return (
+    <div style={{ background: '#f6f8f9', minHeight: '100vh' }}>
+      <NewHero />
+      <div className="max-w-5xl mx-auto px-6 py-10">
+        <div className="grid md:grid-cols-3 gap-5">
+          {CHOICES.map(choice => (
+            <a
+              key={choice.id}
+              href={choice.href}
+              target={choice.href !== '#' ? '_blank' : undefined}
+              rel={choice.href !== '#' ? 'noopener noreferrer' : undefined}
+              className="block bg-white overflow-hidden hover:shadow-md transition-shadow"
+              style={{ border: '1px solid #ededed', borderRadius: '3px', color: '#303030' }}
+            >
+              {/* Image with location badge */}
+              <div style={{ position: 'relative', height: '160px', backgroundImage: `url(${choice.thumbImg})`, backgroundSize: 'cover', backgroundPosition: 'center' }}>
+                <div style={{ position: 'absolute', inset: 0, background: 'rgba(0,0,0,0.3)' }} />
+                <div style={{ position: 'absolute', bottom: '14px', left: '14px' }}>
+                  <span style={{ fontSize: '13px', fontWeight: 700, color: '#fff', textTransform: 'uppercase', letterSpacing: '0.08em', background: choice.locationColor, opacity: 0.9, padding: '6px 14px', borderRadius: '2px', display: 'inline-block' }}>
+                    {choice.location}
+                  </span>
+                </div>
+              </div>
+
+              <div className="p-5 flex flex-col gap-3">
+                {/* Title */}
+                <h3 style={{ fontSize: '17px', fontWeight: 700, color: '#303030', lineHeight: 1.3 }}>
+                  {choice.title}
+                </h3>
+
+                {/* Differentiator — moved up */}
+                <p style={{ fontSize: '13px', color: '#9ea1a3', lineHeight: 1.5 }}>
+                  {choice.differentiator}
+                </p>
+
+                {/* Compact metadata tags — replaces key-value rows */}
+                <div className="flex flex-wrap gap-1.5">
+                  {[choice.duration, choice.format].map(tag => (
+                    <span key={tag} style={{ fontSize: '11px', fontWeight: 600, color: '#555', background: '#f6f8f9', border: '1px solid #ededed', padding: '3px 9px', borderRadius: '2px' }}>
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+
+                {/* Next session + price + CTA */}
+                <div style={{ borderTop: '1px solid #f0f0f0', paddingTop: '10px', marginTop: '4px' }}>
+                  <div className="flex items-start justify-between gap-2">
+                    <div>
+                      <p style={{ fontSize: '10px', fontWeight: 700, color: '#9ea1a3', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Next session</p>
+                      <p style={{ fontSize: '15px', fontWeight: 600, color: '#303030', marginTop: '2px' }}>{choice.nextDate}</p>
+                    </div>
+                    <div className="text-right">
+                      <p style={{ fontSize: '10px', fontWeight: 700, color: '#9ea1a3', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Price from</p>
+                      <p style={{ fontSize: '15px', fontWeight: 600, color: '#303030', marginTop: '2px' }}>{choice.price.replace('From ', '')}</p>
+                    </div>
+                  </div>
+                </div>
+
+                <button style={{ padding: '8px 16px', background: '#0b8ecc', color: '#fff', border: 'none', fontSize: '13px', fontWeight: 600, borderRadius: '2px', cursor: 'pointer' }}>
+                  View Details
+                </button>
+              </div>
+            </a>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
 // ─── Option 5.4: Premium editorial cards ─────────────────────────────────────
 
 function Option54() {
   return (
-    <div style={{ background: '#1a1d22', minHeight: '100vh' }}>
+    <div style={{ background: '#f6f8f9', minHeight: '100vh' }}>
       <NewHero />
       <div className="max-w-5xl mx-auto px-6 py-10">
         <div className="grid md:grid-cols-3 gap-4">
@@ -1131,55 +1204,105 @@ function Option55() {
   );
 }
 
+// Each group has a label and an ordered list of versions.
+// To add a new version: add a new OptionId to the type above,
+// create the component, and append it to the relevant group's versions array.
+
+type VersionEntry = { id: OptionId; label: string };
+type OptionGroup  = { groupId: string; groupLabel: string; versions: VersionEntry[] };
+
+const OPTION_GROUPS: OptionGroup[] = [
+  { groupId: '5.0', groupLabel: '5.0', versions: [{ id: '4', label: '5.0.1' }, { id: '5.5', label: '5.0.2' }] },
+  { groupId: '5.1', groupLabel: '5.1', versions: [{ id: '5.1', label: '5.1.1' }] },
+  { groupId: '5.3', groupLabel: '5.3', versions: [{ id: '5.3', label: '5.3.1' }, { id: '5.3.2', label: '5.3.2' }, { id: '5.2', label: '5.3.3' }] },
+  { groupId: '5.4', groupLabel: '5.4', versions: [{ id: '5.4', label: '5.4.1' }] },
+];
+
 const ARCHIVED_OPTIONS: { id: OptionId; label: string }[] = [
   { id: '1', label: 'Option 1: Clean List' },
   { id: '2', label: 'Option 2: Upcoming Dates' },
   { id: '3', label: 'Option 3: Location-Led' },
 ];
 
-const PRIMARY_OPTIONS: { id: OptionId; label: string; sub: string }[] = [
-  { id: '4',   label: 'Option 4', sub: 'Guided Decision' },
-  { id: '5.1', label: '5.1', sub: 'Minimal Cards' },
-  { id: '5.2', label: '5.2', sub: 'With Details' },
-  { id: '5.3', label: '5.3', sub: 'Comparison' },
-  { id: '5.4', label: '5.4', sub: 'Editorial' },
-  { id: '5.5', label: '5.5', sub: 'Cards + Compare' },
-];
-
 export default function Page() {
-  const [active, setActive] = useState<OptionId>('5.1');
-  const [showArchived, setShowArchived] = useState(false);
+  const [active, setActive]       = useState<OptionId>('5.1');
+  const [openGroup, setOpenGroup] = useState<string | null>(null);
+
+  function toggleGroup(groupId: string) {
+    setOpenGroup(g => g === groupId ? null : groupId);
+  }
+
+  function selectVersion(id: OptionId) {
+    setActive(id);
+    setOpenGroup(null);
+  }
 
   return (
-    <div>
+    <div onClick={() => setOpenGroup(null)}>
       {/* Prototype banner */}
-      <div className="px-4 py-2" style={{ background: '#1a1d22', borderBottom: '2px solid #0b8ecc' }}>
-        <div className="max-w-6xl mx-auto flex items-center gap-2 flex-wrap">
-          <span className="hidden sm:inline shrink-0" style={{ fontSize: '11px', fontWeight: 700, color: '#9ea1a3', textTransform: 'uppercase', letterSpacing: '0.08em' }}>
+      <div className="sticky top-0 z-50 px-4 py-2" style={{ background: '#1a1d22', borderBottom: '2px solid #0b8ecc' }}>
+        <div
+          className="max-w-6xl mx-auto flex items-center gap-1.5 flex-wrap"
+          onClick={e => e.stopPropagation()}
+        >
+          <span className="hidden sm:inline shrink-0 mr-1" style={{ fontSize: '11px', fontWeight: 700, color: '#9ea1a3', textTransform: 'uppercase', letterSpacing: '0.08em' }}>
             Prototype
           </span>
 
-          {/* Primary tabs: 5.1 – 5.4 */}
-          <div className="flex gap-1.5 flex-wrap">
-            {PRIMARY_OPTIONS.map(opt => (
-              <button
-                key={opt.id}
-                onClick={() => { setActive(opt.id); setShowArchived(false); }}
-                className="flex items-center gap-1 px-3 py-1 transition-all"
-                style={{
-                  fontSize: '12px',
-                  fontWeight: 500,
-                  background: active === opt.id ? '#0b8ecc' : 'transparent',
-                  color: active === opt.id ? '#fff' : '#9ea1a3',
-                  border: active === opt.id ? '1px solid #0b8ecc' : '1px solid #36393c',
-                  borderRadius: '2px',
-                }}
-              >
-                <span className="font-semibold">{opt.label}:</span>
-                <span>{opt.sub}</span>
-              </button>
-            ))}
-          </div>
+          {/* Per-option dropdowns */}
+          {OPTION_GROUPS.map(group => {
+            const groupActive = group.versions.some(v => v.id === active);
+            const isOpen      = openGroup === group.groupId;
+            const activeVer   = group.versions.find(v => v.id === active);
+
+            return (
+              <div key={group.groupId} className="relative">
+                <button
+                  onClick={() => toggleGroup(group.groupId)}
+                  className="flex items-center gap-1 px-3 py-1 transition-all"
+                  style={{
+                    fontSize: '12px',
+                    fontWeight: groupActive ? 600 : 500,
+                    background: groupActive ? '#0b8ecc' : 'transparent',
+                    color: groupActive ? '#fff' : '#9ea1a3',
+                    border: groupActive ? '1px solid #0b8ecc' : '1px solid #36393c',
+                    borderRadius: '2px',
+                    cursor: 'pointer',
+                  }}
+                >
+                  <span>{group.groupLabel}</span>
+                  {groupActive && activeVer && (
+                    <span style={{ opacity: 0.8 }}>· {activeVer.label}</span>
+                  )}
+                  <span style={{ fontSize: '9px', marginLeft: '2px' }}>{isOpen ? '▲' : '▾'}</span>
+                </button>
+
+                {isOpen && (
+                  <div
+                    className="absolute top-full left-0 mt-1 py-1 z-50"
+                    style={{ background: '#1a1d22', border: '1px solid #36393c', borderRadius: '2px', minWidth: '130px' }}
+                  >
+                    {group.versions.map(v => (
+                      <button
+                        key={v.id}
+                        onClick={() => selectVersion(v.id)}
+                        className="block w-full text-left px-4 py-1.5 transition-colors"
+                        style={{
+                          fontSize: '12px',
+                          color: active === v.id ? '#fff' : '#9ea1a3',
+                          background: active === v.id ? '#0b8ecc' : 'transparent',
+                          cursor: 'pointer',
+                          whiteSpace: 'nowrap',
+                        }}
+                      >
+                        {v.label}
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
+            );
+          })}
 
           {/* Divider */}
           <div style={{ width: '1px', height: '20px', background: '#36393c', margin: '0 2px' }} />
@@ -1187,8 +1310,8 @@ export default function Page() {
           {/* Archived dropdown */}
           <div className="relative">
             <button
-              onClick={() => setShowArchived(s => !s)}
-              className="flex items-center gap-1 px-3 py-1 transition-all"
+              onClick={() => toggleGroup('archived')}
+              className="px-3 py-1 transition-all"
               style={{
                 fontSize: '12px',
                 fontWeight: 500,
@@ -1199,9 +1322,9 @@ export default function Page() {
                 cursor: 'pointer',
               }}
             >
-              Archived {showArchived ? '▲' : '▾'}
+              Archived {openGroup === 'archived' ? '▲' : '▾'}
             </button>
-            {showArchived && (
+            {openGroup === 'archived' && (
               <div
                 className="absolute top-full left-0 mt-1 py-1 z-50"
                 style={{ background: '#1a1d22', border: '1px solid #36393c', borderRadius: '2px', minWidth: '180px' }}
@@ -1209,7 +1332,7 @@ export default function Page() {
                 {ARCHIVED_OPTIONS.map(opt => (
                   <button
                     key={opt.id}
-                    onClick={() => { setActive(opt.id); setShowArchived(false); }}
+                    onClick={() => selectVersion(opt.id)}
                     className="block w-full text-left px-4 py-1.5 transition-colors"
                     style={{
                       fontSize: '12px',
@@ -1231,13 +1354,14 @@ export default function Page() {
 
       {active === '5.1' && <Option51 />}
       {active === '5.2' && <Option52 />}
-      {active === '5.3' && <Option53 />}
+      {active === '5.3'   && <Option53 />}
+      {active === '5.3.2' && <Option532 />}
       {active === '5.4' && <Option54 />}
       {active === '5.5' && <Option55 />}
-      {active === '1' && <Option1 />}
-      {active === '2' && <Option2 />}
-      {active === '3' && <Option3 />}
-      {active === '4' && <Option4 />}
+      {active === '1'   && <Option1 />}
+      {active === '2'   && <Option2 />}
+      {active === '3'   && <Option3 />}
+      {active === '4'   && <Option4 />}
     </div>
   );
 }
