@@ -15,7 +15,7 @@ import { useState } from 'react';
 
 type LocationCode = 'new-york' | 'london';
 type LocationFilter = 'all' | LocationCode;
-type OptionId = '1' | '2' | '3' | '4';
+type OptionId = '1' | '2' | '3' | '4' | '5';
 
 type Camp = {
   id: string;
@@ -62,8 +62,8 @@ const CAMPS: Camp[] = [
     isAI: false,
     bestFor: 'Analysts building core Wall Street financial skills',
     description:
-      'The #1 Financial Valuation Modeling Boot Camp. An intensive 3-day in-person program covering financial modeling, DCF, and M&A — the same training used on Wall Street.',
-    thumbImg: 'https://media.wallstreetprep.com/uploads/2020/10/04081258/adam-virtual-400.jpg',
+      'The #1 Financial Valuation Modeling Boot Camp. An intensive 3-day in-person program covering financial modeling, DCF, and M&A. The same training used on Wall Street.',
+    thumbImg: '/iStock-1384422450.jpg',
   },
   {
     id: 'london5',
@@ -81,8 +81,8 @@ const CAMPS: Camp[] = [
     isAI: false,
     bestFor: 'Finance professionals seeking a comprehensive deep dive',
     description:
-      'A 5-day in-person classroom program covering the full spectrum of valuation — financial modeling, DCF, M&A, comps, and LBO — delivered in London by Financial Edge.',
-    thumbImg: 'https://media.wallstreetprep.com/uploads/2020/10/04081542/wsp-course-thumb-mergers.jpg',
+      'A 5-day in-person classroom program covering the full spectrum of valuation: financial modeling, DCF, M&A, comps, and LBO. Delivered in London by Financial Edge.',
+    thumbImg: 'https://media.fe.training/2023/05/cntomv7n-Open-Classroom-Thumbnails_London.png',
   },
   {
     id: 'londonAI',
@@ -100,8 +100,8 @@ const CAMPS: Camp[] = [
     isAI: true,
     bestFor: 'Analysts who want to use AI to accelerate financial modeling',
     description:
-      'Learn to use AI to accelerate financial modeling and analysis. A modern approach to valuation built for how finance is evolving — less manual Excel, more AI-assisted output.',
-    thumbImg: 'https://media.wallstreetprep.com/uploads/2020/10/04081253/e-research.jpg',
+      'Learn to use AI to accelerate financial modeling and analysis. A modern approach to valuation built for how finance is evolving: less manual Excel, more AI-assisted output.',
+    thumbImg: '/iStock-2242072348.jpg',
   },
 ];
 
@@ -131,9 +131,17 @@ function BootCampRow({
   const displayDate = date ?? camp.nextDate;
   const showAdditional = !date && camp.additionalDates.length > 0;
 
+  const href = camp.provider === 'Wall Street Prep'
+    ? 'https://www.wallstreetprep.com/seminar/financial-and-valuation-modeling/'
+    : camp.provider === 'Financial Edge' && !camp.isAI
+    ? 'https://www.fe.training/product/public-courses/comprehensive-modeling-and-valuation-masterclasses-july-london-copy/'
+    : '#';
+
   return (
     <a
-      href="#"
+      href={href}
+      target={href !== '#' ? '_blank' : undefined}
+      rel={href !== '#' ? 'noopener noreferrer' : undefined}
       className="block relative group"
       style={{ border: '1px solid #ededed', color: '#303030', background: '#fff' }}
     >
@@ -725,13 +733,269 @@ function Option4() {
   );
 }
 
+// ─── Option 5 data ────────────────────────────────────────────────────────────
+
+type Session5LocationCode = 'nyc' | 'london' | 'online';
+type Session5Provider = 'wsp' | 'fe';
+type Session5Format = 'in-person' | 'virtual';
+
+type Session5 = {
+  id: string;
+  name: string;
+  description: string;
+  dates: string;
+  sortKey: string;
+  locationLabel: string;
+  locationCode: Session5LocationCode;
+  format: Session5Format;
+  duration: string;
+  provider: Session5Provider;
+  price: string;
+  thumbImg: string;
+};
+
+const WSP_THUMB  = '/iStock-1384422450.jpg';
+const FE_THUMB   = 'https://media.fe.training/2023/05/cntomv7n-Open-Classroom-Thumbnails_London.png';
+const FE_AI_THUMB = '/iStock-2242072348.jpg';
+
+const DESC_WSP_FVM   = 'The #1 Financial Valuation Modeling Boot Camp globally. An intensive 3-day in-person program covering financial modeling, DCF, and M&A. The same training used on Wall Street.';
+const DESC_FE_LBO    = 'A comprehensive 5-day classroom program covering financial statement modeling, DCF valuation, M&A analysis, and LBO modeling. Delivered in-person in London by Financial Edge.';
+const DESC_FE_AI_NYC = 'An intensive 3-day in-person program covering financial statement modeling, DCF, and M&A, enhanced with practical AI integration for modern financial analysis workflows.';
+const DESC_FE_AI_VIR = 'Learn to build financial models and run valuation analysis using AI-powered prompt-based workflows. A focused 2-day virtual program for analysts looking to work smarter with AI tools.';
+const DESC_FE_ADV_LBO = 'A focused 1-day in-person deep dive into advanced LBO modeling techniques. Designed for experienced finance professionals looking to sharpen their private equity skillset.';
+
+const SESSIONS5: Session5[] = ([
+  { id: 'wsp-jun10',  name: 'Financial & Valuation Modeling',                   description: DESC_WSP_FVM,    dates: 'Jun 10–12', sortKey: '2026-06-10', locationLabel: 'New York City', locationCode: 'nyc',    format: 'in-person', duration: '3 Days', provider: 'wsp', price: 'From $3,500', thumbImg: WSP_THUMB },
+  { id: 'wsp-jun24',  name: 'Financial & Valuation Modeling',                   description: DESC_WSP_FVM,    dates: 'Jun 24–26', sortKey: '2026-06-24', locationLabel: 'New York City', locationCode: 'nyc',    format: 'in-person', duration: '3 Days', provider: 'wsp', price: 'From $3,500', thumbImg: WSP_THUMB },
+  { id: 'fe-jul6',    name: 'Comprehensive Modeling and Valuation Masterclasses',                           description: DESC_FE_LBO,     dates: 'Jul 6–10',  sortKey: '2026-07-06', locationLabel: 'London',        locationCode: 'london', format: 'in-person', duration: '5 Days', provider: 'fe',  price: 'From £3,200', thumbImg: FE_THUMB },
+  { id: 'wsp-jul15',  name: 'Financial & Valuation Modeling',                   description: DESC_WSP_FVM,    dates: 'Jul 15–17', sortKey: '2026-07-15', locationLabel: 'New York City', locationCode: 'nyc',    format: 'in-person', duration: '3 Days', provider: 'wsp', price: 'From $3,500', thumbImg: WSP_THUMB },
+  { id: 'fe-jul20',   name: 'AI Modeling & Valuation',                          description: DESC_FE_AI_VIR,  dates: 'Jul 20–21', sortKey: '2026-07-20', locationLabel: 'Online',        locationCode: 'online', format: 'virtual',   duration: '2 Days', provider: 'fe',  price: 'From £1,500', thumbImg: FE_AI_THUMB },
+  { id: 'fe-jul22',   name: 'FSM, DCF, M&A Modeling with AI Integration',      description: DESC_FE_AI_NYC,  dates: 'Jul 22–24', sortKey: '2026-07-22', locationLabel: 'New York City', locationCode: 'nyc',    format: 'in-person', duration: '3 Days', provider: 'fe',  price: 'From $2,800', thumbImg: FE_THUMB},
+  { id: 'wsp-aug5',   name: 'Financial & Valuation Modeling',                   description: DESC_WSP_FVM,    dates: 'Aug 5–7',   sortKey: '2026-08-05', locationLabel: 'New York City', locationCode: 'nyc',    format: 'in-person', duration: '3 Days', provider: 'wsp', price: 'From $3,500', thumbImg: WSP_THUMB },
+  { id: 'fe-aug24',   name: 'AI Modeling & Valuation',                          description: DESC_FE_AI_VIR,  dates: 'Aug 24–25', sortKey: '2026-08-24', locationLabel: 'Online',        locationCode: 'online', format: 'virtual',   duration: '2 Days', provider: 'fe',  price: 'From £1,500', thumbImg: FE_AI_THUMB },
+  { id: 'wsp-aug26',  name: 'Financial & Valuation Modeling',                   description: DESC_WSP_FVM,    dates: 'Aug 26–28', sortKey: '2026-08-26', locationLabel: 'New York City', locationCode: 'nyc',    format: 'in-person', duration: '3 Days', provider: 'wsp', price: 'From $3,500', thumbImg: WSP_THUMB },
+  { id: 'fe-aug26',   name: 'FSM, DCF, M&A Modeling with AI Integration',      description: DESC_FE_AI_NYC,  dates: 'Aug 26–28', sortKey: '2026-08-27', locationLabel: 'New York City', locationCode: 'nyc',    format: 'in-person', duration: '3 Days', provider: 'fe',  price: 'From $2,800', thumbImg: FE_THUMB},
+  { id: 'wsp-sep9',   name: 'Financial & Valuation Modeling',                   description: DESC_WSP_FVM,    dates: 'Sep 9–11',  sortKey: '2026-09-09', locationLabel: 'New York City', locationCode: 'nyc',    format: 'in-person', duration: '3 Days', provider: 'wsp', price: 'From $3,500', thumbImg: WSP_THUMB },
+  { id: 'fe-sep21',   name: 'Comprehensive Modeling and Valuation Masterclasses',                           description: DESC_FE_LBO,     dates: 'Sep 21–25', sortKey: '2026-09-21', locationLabel: 'London',        locationCode: 'london', format: 'in-person', duration: '5 Days', provider: 'fe',  price: 'From £3,200', thumbImg: FE_THUMB },
+  { id: 'wsp-sep23',  name: 'Financial & Valuation Modeling',                   description: DESC_WSP_FVM,    dates: 'Sep 23–25', sortKey: '2026-09-23', locationLabel: 'New York City', locationCode: 'nyc',    format: 'in-person', duration: '3 Days', provider: 'wsp', price: 'From $3,500', thumbImg: WSP_THUMB },
+  { id: 'fe-sep23',   name: 'FSM, DCF, M&A Modeling with AI Integration',      description: DESC_FE_AI_NYC,  dates: 'Sep 23–25', sortKey: '2026-09-24', locationLabel: 'New York City', locationCode: 'nyc',    format: 'in-person', duration: '3 Days', provider: 'fe',  price: 'From $2,800', thumbImg: FE_THUMB},
+  { id: 'fe-sep28',   name: 'Advanced LBO',                                     description: DESC_FE_ADV_LBO, dates: 'Sep 28',    sortKey: '2026-09-28', locationLabel: 'London',        locationCode: 'london', format: 'in-person', duration: '1 Day',  provider: 'fe',  price: 'From £950',   thumbImg: FE_THUMB },
+  { id: 'wsp-oct7',   name: 'Financial & Valuation Modeling',                   description: DESC_WSP_FVM,    dates: 'Oct 7–9',   sortKey: '2026-10-07', locationLabel: 'New York City', locationCode: 'nyc',    format: 'in-person', duration: '3 Days', provider: 'wsp', price: 'From $3,500', thumbImg: WSP_THUMB },
+  { id: 'wsp-oct28',  name: 'Financial & Valuation Modeling',                   description: DESC_WSP_FVM,    dates: 'Oct 28–30', sortKey: '2026-10-28', locationLabel: 'New York City', locationCode: 'nyc',    format: 'in-person', duration: '3 Days', provider: 'wsp', price: 'From $3,500', thumbImg: WSP_THUMB },
+  { id: 'fe-oct28',   name: 'FSM, DCF, M&A Modeling with AI Integration',      description: DESC_FE_AI_NYC,  dates: 'Oct 28–30', sortKey: '2026-10-29', locationLabel: 'New York City', locationCode: 'nyc',    format: 'in-person', duration: '3 Days', provider: 'fe',  price: 'From $2,800', thumbImg: FE_THUMB},
+  { id: 'fe-nov9',    name: 'Comprehensive Modeling and Valuation Masterclasses',                           description: DESC_FE_LBO,     dates: 'Nov 9–13',  sortKey: '2026-11-09', locationLabel: 'London',        locationCode: 'london', format: 'in-person', duration: '5 Days', provider: 'fe',  price: 'From £3,200', thumbImg: FE_THUMB },
+  { id: 'wsp-nov18',  name: 'Financial & Valuation Modeling',                   description: DESC_WSP_FVM,    dates: 'Nov 18–20', sortKey: '2026-11-18', locationLabel: 'New York City', locationCode: 'nyc',    format: 'in-person', duration: '3 Days', provider: 'wsp', price: 'From $3,500', thumbImg: WSP_THUMB },
+  { id: 'fe-nov18',   name: 'FSM, DCF, M&A Modeling with AI Integration',      description: DESC_FE_AI_NYC,  dates: 'Nov 18–20', sortKey: '2026-11-19', locationLabel: 'New York City', locationCode: 'nyc',    format: 'in-person', duration: '3 Days', provider: 'fe',  price: 'From $2,800', thumbImg: FE_THUMB},
+  { id: 'wsp-dec9',   name: 'Financial & Valuation Modeling',                   description: DESC_WSP_FVM,    dates: 'Dec 9–11',  sortKey: '2026-12-09', locationLabel: 'New York City', locationCode: 'nyc',    format: 'in-person', duration: '3 Days', provider: 'wsp', price: 'From $3,500', thumbImg: WSP_THUMB },
+  { id: 'fe-dec9',    name: 'FSM, DCF, M&A Modeling with AI Integration',      description: DESC_FE_AI_NYC,  dates: 'Dec 9–11',  sortKey: '2026-12-10', locationLabel: 'New York City', locationCode: 'nyc',    format: 'in-person', duration: '3 Days', provider: 'fe',  price: 'From $2,800', thumbImg: FE_THUMB},
+] as Session5[]).sort((a, b) => a.sortKey.localeCompare(b.sortKey));
+
+// ─── Option 5: Session row (reuses BootCampRow visual structure) ──────────────
+
+function Session5Row({ session }: { session: Session5 }) {
+  const isWSP = session.provider === 'wsp';
+  const isVirtual = session.format === 'virtual';
+
+  const href = session.provider === 'wsp'
+    ? 'https://www.wallstreetprep.com/seminar/financial-and-valuation-modeling/'
+    : session.provider === 'fe' && session.name !== 'AI Modeling & Valuation'
+    ? 'https://www.fe.training/product/public-courses/comprehensive-modeling-and-valuation-masterclasses-july-london-copy/'
+    : '#';
+
+  return (
+    <a
+      href={href}
+      target={href !== '#' ? '_blank' : undefined}
+      rel={href !== '#' ? 'noopener noreferrer' : undefined}
+      className="block relative group"
+      style={{ border: '1px solid #ededed', color: '#303030', background: '#fff' }}
+    >
+      <div className="flex items-stretch">
+        {/* Thumbnail */}
+        <div
+          className="hidden md:block shrink-0"
+          style={{
+            width: '140px',
+            backgroundImage: `url(${session.thumbImg})`,
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+            borderRight: '1px solid #ededed',
+            minHeight: '100px',
+          }}
+        />
+
+        {/* Event name + description */}
+        <div className="flex-1 px-4 py-4" style={{ minWidth: 0 }}>
+          <h5 className="font-semibold leading-snug" style={{ fontSize: '15px', color: '#303030' }}>
+            {session.name}
+          </h5>
+          <div className="mt-1 hidden md:block" style={{ fontSize: '13px', color: '#9ea1a3', lineHeight: 1.5 }}>
+            <p>{session.description}</p>
+          </div>
+          {/* Mobile summary */}
+          <div className="mt-1 md:hidden" style={{ fontSize: '13px', color: '#9ea1a3' }}>
+            {session.dates} · {session.locationLabel}&nbsp;&nbsp;
+            <strong style={{ color: '#0b8ecc' }}>{session.price}</strong>
+          </div>
+        </div>
+
+        {/* Duration */}
+        <div
+          className="hidden md:flex shrink-0 items-center py-4 pr-3"
+          style={{ width: '90px' }}
+        >
+          <span style={{ fontSize: '11px', fontWeight: 600, color: '#0b8ecc', background: '#e8f4fb', padding: '2px 8px', borderRadius: '2px', whiteSpace: 'nowrap' }}>
+            {session.duration}
+          </span>
+        </div>
+
+        {/* Date + Location + Format */}
+        <div className="hidden md:block shrink-0 py-4 pr-3" style={{ width: '140px' }}>
+          <h5 className="font-semibold" style={{ fontSize: '15px', color: '#303030' }}>
+            {session.dates}
+          </h5>
+          <div style={{ fontSize: '12px', color: '#9ea1a3', marginTop: '4px' }}>
+            <p>{session.locationLabel}</p>
+            {isVirtual && (
+              <span style={{ display: 'inline-block', marginTop: '4px', fontSize: '10px', fontWeight: 700, color: '#1a1d22', background: '#72ffab', padding: '1px 6px', borderRadius: '2px', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
+                Virtual
+              </span>
+            )}
+          </div>
+        </div>
+
+        {/* Price */}
+        <div className="hidden md:flex shrink-0 items-center py-4 pr-3" style={{ width: '80px' }}>
+          <h5 className="font-semibold" style={{ fontSize: '15px', color: '#303030' }}>
+            {session.price}
+          </h5>
+        </div>
+
+        {/* CTA */}
+        <div className="flex items-center px-4 shrink-0">
+          <button style={{ background: '#0b8ecc', color: '#fff', fontSize: '13px', fontWeight: 600, padding: '7px 14px', borderRadius: '2px', whiteSpace: 'nowrap' }}>
+            View Details
+          </button>
+        </div>
+      </div>
+    </a>
+  );
+}
+
+// ─── Option 5: Each session as its own listing ────────────────────────────────
+
+function Option5() {
+  const [provider, setProvider] = useState<'all' | Session5Provider>('all');
+  const [format, setFormat]     = useState<'all' | Session5Format>('all');
+  const [location, setLocation] = useState<'all' | Session5LocationCode>('all');
+
+  const filtered = SESSIONS5.filter(s => {
+    if (provider !== 'all' && s.provider !== provider) return false;
+    if (format   !== 'all' && s.format   !== format)   return false;
+    if (location !== 'all' && s.locationCode !== location) return false;
+    return true;
+  });
+
+  const allActive = provider === 'all' && format === 'all' && location === 'all';
+  function resetAll() { setProvider('all'); setFormat('all'); setLocation('all'); }
+
+  const selectStyle = { fontSize: '13px', color: '#303030', background: '#fff', border: '1px solid #ededed', borderRadius: '2px', padding: '7px 32px 7px 12px', appearance: 'none' as const, cursor: 'pointer', backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%239ea1a3'/%3E%3C/svg%3E")`, backgroundRepeat: 'no-repeat', backgroundPosition: 'right 10px center' };
+
+  return (
+    <div style={{ background: '#f6f8f9', minHeight: '100vh' }}>
+      <Hero
+        title="Attend a Wall Street Prep In-Person Boot Camp"
+        subtitle="Build practical financial modeling, valuation, and M&A skills through immersive live classroom training in New York and London."
+      />
+
+      <div className="max-w-6xl mx-auto px-6 py-8">
+        {/* Dropdown filters */}
+        <div className="flex flex-wrap items-end gap-3 mb-6">
+          <div className="flex flex-col gap-0.5">
+            <label style={{ fontSize: '11px', fontWeight: 600, color: '#9ea1a3', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Provider</label>
+            <select value={provider} onChange={e => setProvider(e.target.value as typeof provider)} style={selectStyle}>
+              <option value="all">All Providers</option>
+              <option value="wsp">Wall Street Prep</option>
+              <option value="fe">Financial Edge</option>
+            </select>
+          </div>
+          <div className="flex flex-col gap-0.5">
+            <label style={{ fontSize: '11px', fontWeight: 600, color: '#9ea1a3', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Format</label>
+            <select value={format} onChange={e => setFormat(e.target.value as typeof format)} style={selectStyle}>
+              <option value="all">All Formats</option>
+              <option value="in-person">In-Person</option>
+              <option value="virtual">Virtual</option>
+            </select>
+          </div>
+          <div className="flex flex-col gap-0.5">
+            <label style={{ fontSize: '11px', fontWeight: 600, color: '#9ea1a3', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Location</label>
+            <select value={location} onChange={e => setLocation(e.target.value as typeof location)} style={selectStyle}>
+              <option value="all">All Locations</option>
+              <option value="london">London</option>
+              <option value="nyc">NYC</option>
+            </select>
+          </div>
+          {!allActive && (
+            <button onClick={resetAll} style={{ fontSize: '13px', color: '#0b8ecc', background: 'none', border: 'none', cursor: 'pointer', textDecoration: 'underline', paddingBottom: '8px' }}>
+              Clear filters
+            </button>
+          )}
+          <span style={{ fontSize: '13px', color: '#9ea1a3', paddingBottom: '8px' }}>
+            {filtered.length} session{filtered.length !== 1 ? 's' : ''}
+          </span>
+        </div>
+
+        {/* Session list */}
+        {filtered.length > 0 ? (
+          <div>
+            {/* Column headers */}
+            <div
+              className="hidden md:flex items-center mb-1"
+              style={{ background: '#f6f8f9', border: '1px solid #ededed' }}
+            >
+              <div className="flex-1 px-4 py-2.5">
+                <span style={{ fontSize: '11px', fontWeight: 600, color: '#9ea1a3', textTransform: 'uppercase', letterSpacing: '0.04em' }}>Event</span>
+              </div>
+              <div className="shrink-0 py-2.5 pr-3" style={{ width: '90px' }}>
+                <span style={{ fontSize: '11px', fontWeight: 600, color: '#9ea1a3', textTransform: 'uppercase', letterSpacing: '0.04em' }}>Duration</span>
+              </div>
+              <div className="shrink-0 py-2.5 pr-3" style={{ width: '140px' }}>
+                <span style={{ fontSize: '11px', fontWeight: 600, color: '#9ea1a3', textTransform: 'uppercase', letterSpacing: '0.04em' }}>Date & Location</span>
+              </div>
+              <div className="shrink-0 py-2.5 pr-3" style={{ width: '80px' }}>
+                <span style={{ fontSize: '11px', fontWeight: 600, color: '#9ea1a3', textTransform: 'uppercase', letterSpacing: '0.04em' }}>Price</span>
+              </div>
+              <div className="shrink-0" style={{ width: '120px' }} />
+            </div>
+
+            <div className="flex flex-col gap-2">
+              {filtered.map(session => (
+                <Session5Row key={session.id} session={session} />
+              ))}
+            </div>
+          </div>
+        ) : (
+          <div className="py-16 text-center" style={{ color: '#9ea1a3', fontSize: '15px' }}>
+            No sessions match the selected filters.
+          </div>
+        )}
+
+        <p className="mt-8 text-center" style={{ fontSize: '12px', color: '#9ea1a3' }}>
+          Financial Edge sessions are delivered by Financial Edge, a Wall Street Prep partner institution.
+        </p>
+      </div>
+    </div>
+  );
+}
+
 // ─── Prototype switcher ───────────────────────────────────────────────────────
 
 const PROTO_OPTIONS: { id: OptionId; label: string; sub: string }[] = [
   { id: '1', label: 'Option 1', sub: 'Clean List' },
-  { id: '2', label: 'Option 2', sub: 'Upcoming Dates' },
-  { id: '3', label: 'Option 3', sub: 'Location-Led' },
-  { id: '4', label: 'Option 4', sub: 'Guided Decision' },
+  { id: '5', label: 'Option 2', sub: 'Every Session' },
+  { id: '2', label: 'Option 3', sub: 'Upcoming Dates' },
+  { id: '3', label: 'Option 4', sub: 'Location-Led' },
+  { id: '4', label: 'Option 5', sub: 'Guided Decision' },
 ];
 
 export default function Page() {
@@ -767,6 +1031,7 @@ export default function Page() {
           </div>
           <span className="hidden lg:inline ml-1" style={{ fontSize: '11px', color: '#555' }}>
             {active === '1' ? 'Location filter + row list' :
+             active === '5' ? 'Every session individually listed' :
              active === '2' ? 'All sessions in date order' :
              active === '3' ? 'City-first sections' :
              'Compare then commit'}
@@ -780,6 +1045,7 @@ export default function Page() {
       {active === '2' && <Option2 />}
       {active === '3' && <Option3 />}
       {active === '4' && <Option4 />}
+      {active === '5' && <Option5 />}
     </div>
   );
 }
