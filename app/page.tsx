@@ -15,7 +15,7 @@ import { useState } from 'react';
 
 type LocationCode = 'new-york' | 'london';
 type LocationFilter = 'all' | LocationCode;
-type OptionId = '1' | '2' | '3' | '4';
+type OptionId = '1' | '2' | '3' | '4' | '5.1' | '5.2' | '5.3' | '5.4' | '5.5';
 
 type Camp = {
   id: string;
@@ -62,8 +62,8 @@ const CAMPS: Camp[] = [
     isAI: false,
     bestFor: 'Analysts building core Wall Street financial skills',
     description:
-      'The #1 Financial Valuation Modeling Boot Camp. An intensive 3-day in-person program covering financial modeling, DCF, and M&A — the same training used on Wall Street.',
-    thumbImg: 'https://media.wallstreetprep.com/uploads/2020/10/04081258/adam-virtual-400.jpg',
+      'The #1 Financial Valuation Modeling Boot Camp. An intensive 3-day in-person program covering financial modeling, DCF, and M&A. The same training used on Wall Street.',
+    thumbImg: '/iStock-1384422450.jpg',
   },
   {
     id: 'london5',
@@ -81,8 +81,8 @@ const CAMPS: Camp[] = [
     isAI: false,
     bestFor: 'Finance professionals seeking a comprehensive deep dive',
     description:
-      'A 5-day in-person classroom program covering the full spectrum of valuation — financial modeling, DCF, M&A, comps, and LBO — delivered in London by Financial Edge.',
-    thumbImg: 'https://media.wallstreetprep.com/uploads/2020/10/04081542/wsp-course-thumb-mergers.jpg',
+      'A 5-day in-person classroom program covering the full spectrum of valuation: financial modeling, DCF, M&A, comps, and LBO. Delivered in London by Financial Edge.',
+    thumbImg: 'https://media.fe.training/2023/05/cntomv7n-Open-Classroom-Thumbnails_London.png',
   },
   {
     id: 'londonAI',
@@ -100,8 +100,8 @@ const CAMPS: Camp[] = [
     isAI: true,
     bestFor: 'Analysts who want to use AI to accelerate financial modeling',
     description:
-      'Learn to use AI to accelerate financial modeling and analysis. A modern approach to valuation built for how finance is evolving — less manual Excel, more AI-assisted output.',
-    thumbImg: 'https://media.wallstreetprep.com/uploads/2020/10/04081253/e-research.jpg',
+      'Learn to use AI to accelerate financial modeling and analysis. A modern approach to valuation built for how finance is evolving: less manual Excel, more AI-assisted output.',
+    thumbImg: '/iStock-2242072348.jpg',
   },
 ];
 
@@ -130,10 +130,17 @@ function BootCampRow({
 }) {
   const displayDate = date ?? camp.nextDate;
   const showAdditional = !date && camp.additionalDates.length > 0;
+  const href = camp.provider === 'Wall Street Prep'
+    ? 'https://www.wallstreetprep.com/seminar/financial-and-valuation-modeling/'
+    : camp.provider === 'Financial Edge' && !camp.isAI
+    ? 'https://www.fe.training/product/public-courses/comprehensive-modeling-and-valuation-masterclasses-july-london-copy/'
+    : '#';
 
   return (
     <a
-      href="#"
+      href={href}
+      target={href !== '#' ? '_blank' : undefined}
+      rel={href !== '#' ? 'noopener noreferrer' : undefined}
       className="block relative group"
       style={{ border: '1px solid #ededed', color: '#303030', background: '#fff' }}
     >
@@ -725,31 +732,439 @@ function Option4() {
   );
 }
 
+// ─── Options 5.x: Choose Your Boot Camp ──────────────────────────────────────
+
+type Choice = {
+  id: string;
+  location: string;
+  locationColor: string;
+  title: string;
+  provider: string;
+  poweredBy: boolean;
+  differentiator: string;
+  nextDate: string;
+  duration: string;
+  format: string;
+  focus: string[];
+  price: string;
+  thumbImg: string;
+  href: string;
+};
+
+const CHOICES: Choice[] = [
+  {
+    id: 'ny',
+    location: 'New York',
+    locationColor: '#0b8ecc',
+    title: '3-Day Financial Modeling Boot Camp',
+    provider: 'Wall Street Prep',
+    poweredBy: false,
+    differentiator: 'Comps & LBO self-study included',
+    nextDate: 'Jun 10–12',
+    duration: '3 Days',
+    format: 'In-Person',
+    focus: ['Financial Modeling', 'Valuation', 'M&A'],
+    price: 'From $3,500',
+    thumbImg: '/iStock-529749045.jpg',
+    href: 'https://www.wallstreetprep.com/seminar/financial-and-valuation-modeling/',
+  },
+  {
+    id: 'london',
+    location: 'London',
+    locationColor: '#ff5353',
+    title: '5-Day Financial Modeling Boot Camp',
+    provider: 'Financial Edge',
+    poweredBy: true,
+    differentiator: 'Comps & LBO on Days 4–5',
+    nextDate: 'Sep 8–12',
+    duration: '5 Days',
+    format: 'In-Person',
+    focus: ['Financial Modeling', 'Valuation', 'M&A', 'LBO'],
+    price: 'From £3,200',
+    thumbImg: '/iStock-2152551306.jpg',
+    href: 'https://www.fe.training/product/public-courses/comprehensive-modeling-and-valuation-masterclasses-july-london-copy/',
+  },
+  {
+    id: 'virtual',
+    location: 'Virtual',
+    locationColor: '#6d28d9',
+    title: '2-Day AI-Intensive Modeling Session',
+    provider: 'Financial Edge',
+    poweredBy: true,
+    differentiator: 'No manual Excel. Built with AI-first workflows.',
+    nextDate: 'Jul 20–21',
+    duration: '2 Days',
+    format: 'Virtual',
+    focus: ['AI Modeling', 'Valuation'],
+    price: 'From £1,500',
+    thumbImg: '/iStock-1979289147.jpg',
+    href: '#',
+  },
+];
+
+function NewHero() {
+  return (
+    <div
+      className="px-6 py-14 relative"
+      style={{
+        backgroundImage: 'url(https://media.wallstreetprep.com/uploads/2022/07/14174731/banner-instructor3.jpeg)',
+        backgroundSize: 'cover',
+        backgroundPosition: 'center top',
+      }}
+    >
+      <div className="absolute inset-0" style={{ background: 'rgba(20, 24, 30, 0.78)' }} />
+      <div className="max-w-5xl mx-auto relative">
+        <h1
+          className="font-bold text-white leading-tight mb-4"
+          style={{ fontSize: '52px', letterSpacing: '-0.5px', lineHeight: 1.1 }}
+        >
+          Choose Your Financial Modeling Boot Camp
+        </h1>
+        <p style={{ color: 'rgba(255,255,255,0.65)', fontSize: '15px', lineHeight: 1.6, maxWidth: '560px' }}>
+          Build practical financial modeling, valuation, and M&A skills through live training in New York, London, or an AI-powered virtual session.
+        </p>
+      </div>
+    </div>
+  );
+}
+
+// ─── Option 5.1: Minimal visual cards ────────────────────────────────────────
+
+function Option51() {
+  return (
+    <div style={{ background: '#f6f8f9', minHeight: '100vh' }}>
+      <NewHero />
+      <div className="max-w-5xl mx-auto px-6 py-10">
+        <div className="grid md:grid-cols-3 gap-6">
+          {CHOICES.map(choice => (
+            <a
+              key={choice.id}
+              href={choice.href}
+              target={choice.href !== '#' ? '_blank' : undefined}
+              rel={choice.href !== '#' ? 'noopener noreferrer' : undefined}
+              className="block bg-white overflow-hidden hover:shadow-md transition-shadow"
+              style={{ border: '1px solid #ededed', borderRadius: '3px', color: '#303030' }}
+            >
+              <div style={{ height: '220px', backgroundImage: `url(${choice.thumbImg})`, backgroundSize: 'cover', backgroundPosition: 'center' }} />
+              <div className="p-6 flex flex-col gap-3">
+                <p style={{ fontSize: '11px', fontWeight: 700, color: choice.locationColor, textTransform: 'uppercase', letterSpacing: '0.1em' }}>
+                  {choice.location}
+                </p>
+                <h3 style={{ fontSize: '20px', fontWeight: 700, color: '#303030', lineHeight: 1.25 }}>
+                  {choice.title}
+                </h3>
+                <p style={{ fontSize: '14px', color: '#9ea1a3', lineHeight: 1.5 }}>
+                  {choice.differentiator}
+                </p>
+                <p style={{ fontSize: '13px', color: '#9ea1a3' }}>
+                  <span style={{ fontWeight: 600, color: '#303030' }}>Next:</span> {choice.nextDate}
+                </p>
+                <button style={{ marginTop: '4px', width: '100%', padding: '10px', background: '#0b8ecc', color: '#fff', fontSize: '13px', fontWeight: 600, borderRadius: '2px', border: 'none', cursor: 'pointer' }}>
+                  View Details
+                </button>
+              </div>
+            </a>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ─── Option 5.2: Cards with detail chips ─────────────────────────────────────
+
+function Option52() {
+  return (
+    <div style={{ background: '#f6f8f9', minHeight: '100vh' }}>
+      <NewHero />
+      <div className="max-w-5xl mx-auto px-6 py-10">
+        <div className="grid md:grid-cols-3 gap-6">
+          {CHOICES.map(choice => (
+            <a
+              key={choice.id}
+              href={choice.href}
+              target={choice.href !== '#' ? '_blank' : undefined}
+              rel={choice.href !== '#' ? 'noopener noreferrer' : undefined}
+              className="block bg-white overflow-hidden hover:shadow-md transition-shadow"
+              style={{ border: '1px solid #ededed', borderRadius: '3px', color: '#303030' }}
+            >
+              <div style={{ height: '220px', backgroundImage: `url(${choice.thumbImg})`, backgroundSize: 'cover', backgroundPosition: 'center' }} />
+              <div className="p-6 flex flex-col gap-3">
+                <p style={{ fontSize: '11px', fontWeight: 700, color: choice.locationColor, textTransform: 'uppercase', letterSpacing: '0.1em' }}>
+                  {choice.location}
+                </p>
+                <h3 style={{ fontSize: '20px', fontWeight: 700, color: '#303030', lineHeight: 1.25 }}>
+                  {choice.title}
+                </h3>
+                <p style={{ fontSize: '14px', color: '#9ea1a3', lineHeight: 1.5 }}>
+                  {choice.differentiator}
+                </p>
+                {/* Detail chips */}
+                <div className="flex flex-wrap gap-1.5">
+                  {[choice.duration, choice.format, ...choice.focus].map(chip => (
+                    <span key={chip} style={{ fontSize: '11px', color: '#555', background: '#f6f8f9', border: '1px solid #ededed', padding: '3px 8px', borderRadius: '2px' }}>
+                      {chip}
+                    </span>
+                  ))}
+                </div>
+                <p style={{ fontSize: '13px', color: '#9ea1a3' }}>
+                  <span style={{ fontWeight: 600, color: '#303030' }}>Next:</span> {choice.nextDate}
+                </p>
+                <button style={{ marginTop: '4px', width: '100%', padding: '10px', background: '#0b8ecc', color: '#fff', fontSize: '13px', fontWeight: 600, borderRadius: '2px', border: 'none', cursor: 'pointer' }}>
+                  View Details
+                </button>
+              </div>
+            </a>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ─── Option 5.3: Polished comparison cards ───────────────────────────────────
+
+function Option53() {
+  return (
+    <div style={{ background: '#f6f8f9', minHeight: '100vh' }}>
+      <NewHero />
+      <div className="max-w-5xl mx-auto px-6 py-10">
+        <div className="grid md:grid-cols-3 gap-5">
+          {CHOICES.map(choice => (
+            <a
+              key={choice.id}
+              href={choice.href}
+              target={choice.href !== '#' ? '_blank' : undefined}
+              rel={choice.href !== '#' ? 'noopener noreferrer' : undefined}
+              className="block bg-white overflow-hidden hover:shadow-md transition-shadow"
+              style={{ border: '1px solid #ededed', borderRadius: '3px', color: '#303030' }}
+            >
+              {/* Image with location badge overlay */}
+              <div style={{ position: 'relative', height: '160px', backgroundImage: `url(${choice.thumbImg})`, backgroundSize: 'cover', backgroundPosition: 'center' }}>
+                <div style={{ position: 'absolute', inset: 0, background: 'rgba(0,0,0,0.3)' }} />
+                <div style={{ position: 'absolute', bottom: '12px', left: '16px' }}>
+                  <span style={{ fontSize: '11px', fontWeight: 700, color: '#fff', textTransform: 'uppercase', letterSpacing: '0.08em', background: choice.locationColor, padding: '4px 10px', borderRadius: '2px' }}>
+                    {choice.location}
+                  </span>
+                </div>
+              </div>
+
+              <div className="p-5 flex flex-col gap-3">
+                <h3 style={{ fontSize: '17px', fontWeight: 700, color: '#303030', lineHeight: 1.3 }}>
+                  {choice.title}
+                </h3>
+
+                {/* Key facts */}
+                <div style={{ borderTop: '1px solid #f0f0f0', borderBottom: '1px solid #f0f0f0', padding: '10px 0' }}>
+                  {([['Duration', choice.duration], ['Format', choice.format], ['Provider', choice.provider]] as [string,string][]).map(([label, value]) => (
+                    <div key={label} className="flex justify-between" style={{ fontSize: '13px', padding: '3px 0' }}>
+                      <span style={{ color: '#9ea1a3' }}>{label}</span>
+                      <span style={{ fontWeight: 500, color: '#303030' }}>{value}</span>
+                    </div>
+                  ))}
+                </div>
+
+                <p style={{ fontSize: '13px', color: '#9ea1a3', lineHeight: 1.5 }}>
+                  {choice.differentiator}
+                </p>
+
+                <div className="flex items-end justify-between">
+                  <div>
+                    <p style={{ fontSize: '10px', fontWeight: 700, color: '#9ea1a3', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Next session</p>
+                    <p style={{ fontSize: '15px', fontWeight: 600, color: '#303030' }}>{choice.nextDate}</p>
+                  </div>
+                  <p style={{ fontSize: '13px', fontWeight: 600, color: '#303030' }}>{choice.price}</p>
+                </div>
+
+                <button style={{ width: '100%', padding: '9px', background: '#0b8ecc', color: '#fff', fontSize: '13px', fontWeight: 600, borderRadius: '2px', border: 'none', cursor: 'pointer' }}>
+                  View Details
+                </button>
+              </div>
+            </a>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ─── Option 5.4: Premium editorial cards ─────────────────────────────────────
+
+function Option54() {
+  return (
+    <div style={{ background: '#1a1d22', minHeight: '100vh' }}>
+      <NewHero />
+      <div className="max-w-5xl mx-auto px-6 py-10">
+        <div className="grid md:grid-cols-3 gap-4">
+          {CHOICES.map(choice => (
+            <a
+              key={choice.id}
+              href={choice.href}
+              target={choice.href !== '#' ? '_blank' : undefined}
+              rel={choice.href !== '#' ? 'noopener noreferrer' : undefined}
+              className="block relative overflow-hidden group"
+              style={{ height: '460px', borderRadius: '3px' }}
+            >
+              {/* Background image */}
+              <div
+                className="absolute inset-0 transition-transform duration-500 group-hover:scale-105"
+                style={{ backgroundImage: `url(${choice.thumbImg})`, backgroundSize: 'cover', backgroundPosition: 'center' }}
+              />
+              {/* Gradient overlay */}
+              <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(0,0,0,0.92) 0%, rgba(0,0,0,0.5) 55%, rgba(0,0,0,0.1) 100%)' }} />
+              {/* Text content */}
+              <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, padding: '28px' }}>
+                <p style={{ fontSize: '11px', fontWeight: 700, color: '#72ffab', textTransform: 'uppercase', letterSpacing: '0.12em', marginBottom: '10px' }}>
+                  {choice.location}
+                </p>
+                <h3 style={{ fontSize: '22px', fontWeight: 700, color: '#fff', lineHeight: 1.2, marginBottom: '10px' }}>
+                  {choice.title}
+                </h3>
+                <p style={{ fontSize: '13px', color: 'rgba(255,255,255,0.6)', lineHeight: 1.5, marginBottom: '20px' }}>
+                  {choice.differentiator}
+                </p>
+                <div className="flex items-center justify-between gap-3">
+                  <p style={{ fontSize: '13px', color: 'rgba(255,255,255,0.6)' }}>
+                    Next: <span style={{ color: '#fff', fontWeight: 600 }}>{choice.nextDate}</span>
+                  </p>
+                  <button style={{ padding: '8px 18px', background: '#fff', color: '#1a1d22', fontSize: '13px', fontWeight: 700, borderRadius: '2px', border: 'none', cursor: 'pointer', whiteSpace: 'nowrap' }}>
+                    View Details
+                  </button>
+                </div>
+              </div>
+            </a>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
 // ─── Prototype switcher ───────────────────────────────────────────────────────
 
-const PROTO_OPTIONS: { id: OptionId; label: string; sub: string }[] = [
-  { id: '1', label: 'Option 1', sub: 'Clean List' },
-  { id: '2', label: 'Option 2', sub: 'Upcoming Dates' },
-  { id: '3', label: 'Option 3', sub: 'Location-Led' },
-  { id: '4', label: 'Option 4', sub: 'Guided Decision' },
+// ─── Option 5.5: Comparison cards with images ────────────────────────────────
+
+function Option55() {
+  return (
+    <div style={{ background: '#f6f8f9', minHeight: '100vh' }}>
+      <NewHero />
+      <div className="max-w-5xl mx-auto px-6 py-10">
+        <div className="grid md:grid-cols-3 gap-5">
+          {CHOICES.map((choice) => (
+            <a
+              key={choice.id}
+              href={choice.href}
+              target={choice.href !== '#' ? '_blank' : undefined}
+              rel={choice.href !== '#' ? 'noopener noreferrer' : undefined}
+              className="block bg-white overflow-hidden hover:shadow-md transition-shadow"
+              style={{ border: '1px solid #ededed', borderRadius: '3px', color: '#303030' }}
+            >
+              {/* Image with location-colored bottom border */}
+              <div style={{ height: '180px', backgroundImage: `url(${choice.thumbImg})`, backgroundSize: 'cover', backgroundPosition: 'center', borderBottom: `4px solid ${choice.locationColor}` }} />
+
+              <div className="p-5 flex flex-col gap-3">
+                {/* Location + title */}
+                <div>
+                  <p style={{ fontSize: '11px', fontWeight: 700, color: choice.locationColor, textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '4px' }}>
+                    {choice.location}
+                  </p>
+                  <h3 style={{ fontSize: '16px', fontWeight: 700, color: '#303030', lineHeight: 1.3 }}>
+                    {choice.title}
+                  </h3>
+                  <p style={{ fontSize: '12px', color: '#9ea1a3', marginTop: '2px' }}>
+                    {choice.provider}{choice.poweredBy ? ' · Powered by Financial Edge' : ''}
+                  </p>
+                </div>
+
+                {/* Spec rows */}
+                <div style={{ borderTop: '1px solid #f0f0f0', borderBottom: '1px solid #f0f0f0', padding: '8px 0' }}>
+                  {([
+                    ['Duration', choice.duration],
+                    ['Format', choice.format],
+                    ['Approach', choice.differentiator],
+                  ] as [string, string][]).map(([label, value]) => (
+                    <div key={label} className="flex justify-between gap-2 py-1" style={{ fontSize: '13px' }}>
+                      <span style={{ color: '#9ea1a3', flexShrink: 0 }}>{label}</span>
+                      <span style={{ fontWeight: 500, color: '#303030', textAlign: 'right' }}>{value}</span>
+                    </div>
+                  ))}
+                </div>
+
+                {/* Topic chips */}
+                <div className="flex flex-wrap gap-1">
+                  {choice.focus.map(t => (
+                    <span key={t} style={{ fontSize: '11px', color: '#555', background: '#f6f8f9', border: '1px solid #ededed', padding: '2px 7px', borderRadius: '2px' }}>
+                      {t}
+                    </span>
+                  ))}
+                </div>
+
+                {/* Next session + price */}
+                <div style={{ borderTop: '1px solid #f0f0f0', paddingTop: '10px' }}>
+                  <p style={{ fontSize: '10px', fontWeight: 700, color: '#9ea1a3', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Next session</p>
+                  <p style={{ fontSize: '15px', fontWeight: 600, color: '#303030', marginTop: '2px' }}>{choice.nextDate}</p>
+                </div>
+
+                <div className="flex items-center justify-between gap-2 mt-auto">
+                  <span style={{ fontSize: '13px', fontWeight: 600, color: '#303030' }}>{choice.price}</span>
+                  <button
+                    style={{
+                      padding: '8px 16px',
+                      background: '#0b8ecc',
+                      color: '#fff',
+                      border: '1px solid #0b8ecc',
+                      fontSize: '13px',
+                      fontWeight: 600,
+                      borderRadius: '2px',
+                      cursor: 'pointer',
+                    }}
+                  >
+                    View Details
+                  </button>
+                </div>
+              </div>
+            </a>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+const ARCHIVED_OPTIONS: { id: OptionId; label: string }[] = [
+  { id: '1', label: 'Option 1: Clean List' },
+  { id: '2', label: 'Option 2: Upcoming Dates' },
+  { id: '3', label: 'Option 3: Location-Led' },
+];
+
+const PRIMARY_OPTIONS: { id: OptionId; label: string; sub: string }[] = [
+  { id: '4',   label: 'Option 4', sub: 'Guided Decision' },
+  { id: '5.1', label: '5.1', sub: 'Minimal Cards' },
+  { id: '5.2', label: '5.2', sub: 'With Details' },
+  { id: '5.3', label: '5.3', sub: 'Comparison' },
+  { id: '5.4', label: '5.4', sub: 'Editorial' },
+  { id: '5.5', label: '5.5', sub: 'Cards + Compare' },
 ];
 
 export default function Page() {
-  const [active, setActive] = useState<OptionId>('1');
+  const [active, setActive] = useState<OptionId>('5.1');
+  const [showArchived, setShowArchived] = useState(false);
 
   return (
     <div>
       {/* Prototype banner */}
       <div className="px-4 py-2" style={{ background: '#1a1d22', borderBottom: '2px solid #0b8ecc' }}>
-        <div className="max-w-6xl mx-auto flex items-center gap-3 flex-wrap">
-          <span className="hidden sm:inline" style={{ fontSize: '11px', fontWeight: 700, color: '#9ea1a3', textTransform: 'uppercase', letterSpacing: '0.08em' }}>
+        <div className="max-w-6xl mx-auto flex items-center gap-2 flex-wrap">
+          <span className="hidden sm:inline shrink-0" style={{ fontSize: '11px', fontWeight: 700, color: '#9ea1a3', textTransform: 'uppercase', letterSpacing: '0.08em' }}>
             Prototype
           </span>
+
+          {/* Primary tabs: 5.1 – 5.4 */}
           <div className="flex gap-1.5 flex-wrap">
-            {PROTO_OPTIONS.map((opt) => (
+            {PRIMARY_OPTIONS.map(opt => (
               <button
                 key={opt.id}
-                onClick={() => setActive(opt.id)}
+                onClick={() => { setActive(opt.id); setShowArchived(false); }}
                 className="flex items-center gap-1 px-3 py-1 transition-all"
                 style={{
                   fontSize: '12px',
@@ -765,17 +1180,60 @@ export default function Page() {
               </button>
             ))}
           </div>
-          <span className="hidden lg:inline ml-1" style={{ fontSize: '11px', color: '#555' }}>
-            {active === '1' ? 'Location filter + row list' :
-             active === '2' ? 'All sessions in date order' :
-             active === '3' ? 'City-first sections' :
-             'Compare then commit'}
-          </span>
+
+          {/* Divider */}
+          <div style={{ width: '1px', height: '20px', background: '#36393c', margin: '0 2px' }} />
+
+          {/* Archived dropdown */}
+          <div className="relative">
+            <button
+              onClick={() => setShowArchived(s => !s)}
+              className="flex items-center gap-1 px-3 py-1 transition-all"
+              style={{
+                fontSize: '12px',
+                fontWeight: 500,
+                background: ['1','2','3'].includes(active) ? '#36393c' : 'transparent',
+                color: ['1','2','3'].includes(active) ? '#fff' : '#9ea1a3',
+                border: '1px solid #36393c',
+                borderRadius: '2px',
+                cursor: 'pointer',
+              }}
+            >
+              Archived {showArchived ? '▲' : '▾'}
+            </button>
+            {showArchived && (
+              <div
+                className="absolute top-full left-0 mt-1 py-1 z-50"
+                style={{ background: '#1a1d22', border: '1px solid #36393c', borderRadius: '2px', minWidth: '180px' }}
+              >
+                {ARCHIVED_OPTIONS.map(opt => (
+                  <button
+                    key={opt.id}
+                    onClick={() => { setActive(opt.id); setShowArchived(false); }}
+                    className="block w-full text-left px-4 py-1.5 transition-colors"
+                    style={{
+                      fontSize: '12px',
+                      color: active === opt.id ? '#fff' : '#9ea1a3',
+                      background: active === opt.id ? '#0b8ecc' : 'transparent',
+                      cursor: 'pointer',
+                    }}
+                  >
+                    {opt.label}
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
         </div>
       </div>
 
       <WSPHeader />
 
+      {active === '5.1' && <Option51 />}
+      {active === '5.2' && <Option52 />}
+      {active === '5.3' && <Option53 />}
+      {active === '5.4' && <Option54 />}
+      {active === '5.5' && <Option55 />}
       {active === '1' && <Option1 />}
       {active === '2' && <Option2 />}
       {active === '3' && <Option3 />}
