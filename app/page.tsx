@@ -1143,28 +1143,28 @@ const CATEGORY_GROUPS: CategoryGroup[] = [
     categoryId: 'detailed',
     categoryLabel: 'Detailed',
     versions: [
-      { id: '4',     label: '5.0.1' },
-      { id: '5.5',   label: '5.0.2' },
-      { id: '5.3',   label: '5.3.1' },
-      { id: '5.3.2', label: '5.3.2' },
+      { id: '4',     label: 'D-V1' },
+      { id: '5.5',   label: 'D-V2' },
+      { id: '5.3',   label: 'D-V3' },
+      { id: '5.3.2', label: 'D-V4' },
     ],
   },
   {
     categoryId: 'simple',
     categoryLabel: 'Simple',
     versions: [
-      { id: '5.1', label: '5.1.1' },
-      { id: '5.2', label: '5.3.3' },
+      { id: '5.1', label: 'S-V1' },
+      { id: '5.2', label: 'S-V2' },
     ],
   },
   {
     categoryId: 'image-first',
     categoryLabel: 'Image First',
     versions: [
-      { id: '5.4',   label: '5.4.1' },
-      { id: '5.4.2', label: '5.4.2' },
-      { id: '5.4.3', label: '5.4.3' },
-        { id: '5.4.4', label: '5.4.4' },
+      { id: '5.4',   label: 'IF-V1' },
+      { id: '5.4.2', label: 'IF-V2' },
+      { id: '5.4.3', label: 'IF-V3' },
+      { id: '5.4.4', label: 'IF-V4' },
     ],
   },
 ];
@@ -1176,7 +1176,7 @@ const ARCHIVED_OPTIONS: { id: OptionId; label: string }[] = [
 ];
 
 export default function Page() {
-  const [active, setActive]       = useState<OptionId>('5.4.3');
+  const [active, setActive]       = useState<OptionId>('5.4.4');
   const [openGroup, setOpenGroup] = useState<string | null>(null);
 
   function toggleGroup(id: string) { setOpenGroup(g => g === id ? null : id); }
