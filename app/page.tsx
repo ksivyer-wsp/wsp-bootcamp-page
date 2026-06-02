@@ -15,7 +15,7 @@ import { useState } from 'react';
 
 type LocationCode = 'new-york' | 'london';
 type LocationFilter = 'all' | LocationCode;
-type OptionId = '1' | '2' | '3' | '4' | '5.1' | '5.2' | '5.3' | '5.3.2' | '5.4' | '5.4.2' | '5.4.3' | '5.4.4' | '5.5';
+type OptionId = '1' | '2' | '3' | '4' | '5.1' | '5.2' | '5.3' | '5.3.2' | '5.4' | '5.4.2' | '5.4.3' | '5.4.4' | '5.4.5' | '5.5';
 
 type Camp = {
   id: string;
@@ -742,11 +742,13 @@ type Choice = {
   provider: string;
   poweredBy: boolean;
   differentiator: string;
+  detailedDifferentiator: string;
   nextDate: string;
   duration: string;
   format: string;
   focus: string[];
   price: string;
+  moreDates: number;
   thumbImg: string;
   href: string;
 };
@@ -760,11 +762,13 @@ const CHOICES: Choice[] = [
     provider: 'Wall Street Prep',
     poweredBy: false,
     differentiator: 'Comps & LBO self-study included',
+    detailedDifferentiator: 'Build financial models, run DCF and M&A analysis. Comps & LBO self-study.',
     nextDate: 'Jun 10–12',
     duration: '3 Days',
     format: 'In-Person',
     focus: ['Financial Modeling', 'Valuation', 'M&A'],
     price: 'From $3,500',
+    moreDates: 5,
     thumbImg: '/iStock-1406960186.jpg',
     href: 'https://www.wallstreetprep.com/seminar/financial-and-valuation-modeling/',
   },
@@ -776,11 +780,13 @@ const CHOICES: Choice[] = [
     provider: 'Financial Edge',
     poweredBy: true,
     differentiator: 'Comps & LBO on Days 4–5',
+    detailedDifferentiator: 'Full valuation suite: modeling, DCF, M&A, Comps & LBO, with AI integration.',
     nextDate: 'Sep 8–12',
     duration: '5 Days',
     format: 'In-Person',
     focus: ['Financial Modeling', 'Valuation', 'M&A', 'LBO'],
     price: 'From £3,200',
+    moreDates: 4,
     thumbImg: '/iStock-2194509213.jpg',
     href: 'https://www.fe.training/product/public-courses/comprehensive-modeling-and-valuation-masterclasses-july-london-copy/',
   },
@@ -788,15 +794,17 @@ const CHOICES: Choice[] = [
     id: 'virtual',
     location: 'Virtual',
     locationColor: '#6d28d9',
-    title: '2-Day AI-Intensive Modeling Session',
+    title: '2-Day AI-Intensive Financial Modeling Boot Camp',
     provider: 'Financial Edge',
     poweredBy: true,
     differentiator: 'AI-first modeling. No manual Excel.',
+    detailedDifferentiator: 'AI-first modeling, no manual Excel. A fully AI-driven approach to valuation.',
     nextDate: 'Jul 20–21',
     duration: '2 Days',
     format: 'Virtual',
     focus: ['AI Modeling', 'Valuation'],
     price: 'From £1,500',
+    moreDates: 2,
     thumbImg: '/iStock-1979289147.jpg',
     href: '#',
   },
@@ -1020,7 +1028,7 @@ function Option52() {
 
 // ─── Editorial helpers ────────────────────────────────────────────────────────
 
-function EditorialCard({ choice, bottomBorder, gradientRgb = '0,0,0', greenTag }: { choice: Choice; bottomBorder?: boolean; gradientRgb?: string; greenTag?: boolean }) {
+function EditorialCard({ choice, bottomBorder, gradientRgb = '0,0,0', greenTag, longDiff }: { choice: Choice; bottomBorder?: boolean; gradientRgb?: string; greenTag?: boolean; longDiff?: boolean }) {
   const gradient = `linear-gradient(to top, rgba(${gradientRgb},1) 0%, rgba(${gradientRgb},1) 32%, rgba(${gradientRgb},0.6) 50%, rgba(${gradientRgb},0) 68%)`;
   return (
     <a href={choice.href} target={choice.href !== '#' ? '_blank' : undefined} rel={choice.href !== '#' ? 'noopener noreferrer' : undefined}
@@ -1031,7 +1039,7 @@ function EditorialCard({ choice, bottomBorder, gradientRgb = '0,0,0', greenTag }
       <div style={{ position: 'absolute', inset: 0, background: gradient }} />
       <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, padding: '24px' }} className="flex flex-col gap-2.5">
         <div>
-          <span style={{ fontSize: '13px', fontWeight: 700, color: (bottomBorder || greenTag) ? '#1a1d22' : '#fff', textTransform: 'uppercase', letterSpacing: '0.08em', background: (bottomBorder || greenTag) ? '#72ffab' : choice.locationColor, opacity: 0.9, padding: '6px 14px', borderRadius: '2px', display: 'inline-block' }}>
+          <span style={{ fontSize: '11px', fontWeight: 700, color: (bottomBorder || greenTag) ? '#1a1d22' : '#fff', textTransform: 'uppercase', letterSpacing: '0.08em', background: (bottomBorder || greenTag) ? '#72ffab' : choice.locationColor, opacity: 0.9, padding: '5px 12px', borderRadius: '2px', display: 'inline-block' }}>
             {choice.location}
           </span>
         </div>
@@ -1039,20 +1047,21 @@ function EditorialCard({ choice, bottomBorder, gradientRgb = '0,0,0', greenTag }
         <div className="flex flex-wrap gap-1.5">
           {[choice.duration, choice.format].map(tag => <span key={tag} style={{ fontSize: '11px', fontWeight: 600, color: 'rgba(255,255,255,0.85)', background: 'rgba(255,255,255,0.12)', border: '1px solid rgba(255,255,255,0.2)', padding: '3px 9px', borderRadius: '2px' }}>{tag}</span>)}
         </div>
-        <p style={{ fontSize: '13px', color: 'rgba(255,255,255,0.6)', lineHeight: 1.5 }}>{choice.differentiator}</p>
+        <p style={{ fontSize: '13px', color: 'rgba(255,255,255,0.6)', lineHeight: 1.5 }}>{longDiff ? choice.detailedDifferentiator : choice.differentiator}</p>
         <div style={{ borderTop: '1px solid rgba(255,255,255,0.15)', paddingTop: '12px', marginTop: '2px' }}>
           <div className="flex items-start justify-between gap-2">
             <div>
               <p style={{ fontSize: '10px', fontWeight: 700, color: 'rgba(255,255,255,0.5)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Next session</p>
-              <p style={{ fontSize: '15px', fontWeight: 600, color: '#fff', marginTop: '2px' }}>{choice.nextDate}</p>
+              <p style={{ fontSize: '18px', fontWeight: 600, color: '#fff', marginTop: '2px' }}>{choice.nextDate}</p>
+              <p style={{ fontSize: '13px', color: 'rgba(255,255,255,0.45)', marginTop: '2px' }}>+{choice.moreDates} more dates</p>
             </div>
             <div className="text-right">
               <p style={{ fontSize: '10px', fontWeight: 700, color: 'rgba(255,255,255,0.5)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Price from</p>
-              <p style={{ fontSize: '15px', fontWeight: 600, color: '#fff', marginTop: '2px' }}>{choice.price.replace('From ', '')}</p>
+              <p style={{ fontSize: '18px', fontWeight: 600, color: '#fff', marginTop: '2px' }}>{choice.price.replace('From ', '')}</p>
             </div>
           </div>
         </div>
-        <button style={{ marginTop: '4px', padding: '9px 18px', background: '#fff', color: '#1a1d22', fontSize: '13px', fontWeight: 700, borderRadius: '2px', border: 'none', cursor: 'pointer', alignSelf: 'flex-start' }}>View Details</button>
+        <button style={{ marginTop: '4px', padding: '9px 18px', background: '#0b8ecc', color: '#fff', fontSize: '13px', fontWeight: 700, borderRadius: '2px', border: 'none', cursor: 'pointer', alignSelf: 'flex-start' }}>View Details</button>
       </div>
     </a>
   );
@@ -1134,6 +1143,21 @@ function Option544() {
   );
 }
 
+// ─── IF-V5: Editorial + blue gradient + green tags + expanded description ─────
+
+function Option545() {
+  return (
+    <div style={{ background: '#f6f8f9', minHeight: '100vh' }}>
+      <NewHero />
+      <div className="max-w-[1140px] mx-auto px-6 py-10">
+        <div className="grid md:grid-cols-3 gap-4">
+          {CHOICES.map(choice => <EditorialCard key={choice.id} choice={choice} gradientRgb="10,45,74" greenTag longDiff />)}
+        </div>
+      </div>
+    </div>
+  );
+}
+
 // ─── Prototype switcher ───────────────────────────────────────────────────────
 
 type CategoryGroup = { categoryId: string; categoryLabel: string; versions: { id: OptionId; label: string }[] };
@@ -1165,6 +1189,7 @@ const CATEGORY_GROUPS: CategoryGroup[] = [
       { id: '5.4.2', label: 'IF-V2' },
       { id: '5.4.3', label: 'IF-V3' },
       { id: '5.4.4', label: 'IF-V4' },
+      { id: '5.4.5', label: 'IF-V5' },
     ],
   },
 ];
@@ -1259,6 +1284,7 @@ export default function Page() {
       {active === '5.4.2' && <Option542 />}
       {active === '5.4.3' && <Option543 />}
       {active === '5.4.4' && <Option544 />}
+      {active === '5.4.5' && <Option545 />}
       {active === '1'     && <Option1 />}
       {active === '2'     && <Option2 />}
       {active === '3'     && <Option3 />}
