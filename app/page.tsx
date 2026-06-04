@@ -15,7 +15,7 @@ import { useState } from 'react';
 
 type LocationCode = 'new-york' | 'london';
 type LocationFilter = 'all' | LocationCode;
-type OptionId = '1' | '2' | '3' | '4' | '5.1' | '5.2' | '5.3' | '5.3.2' | '5.4' | '5.4.2' | '5.4.3' | '5.4.4' | '5.4.5' | '5.5';
+type OptionId = '1' | '2' | '3' | '4' | '5.1' | '5.1.3' | '5.2' | '5.3' | '5.3.2' | '5.4' | '5.4.2' | '5.4.3' | '5.4.4' | '5.4.5' | '5.4.6' | '5.5';
 
 type Camp = {
   id: string;
@@ -749,6 +749,7 @@ type Choice = {
   focus: string[];
   price: string;
   moreDates: number;
+  badgeLabel?: string;
   thumbImg: string;
   href: string;
 };
@@ -805,6 +806,7 @@ const CHOICES: Choice[] = [
     focus: ['AI Modeling', 'Valuation'],
     price: 'From £1,500',
     moreDates: 2,
+    badgeLabel: 'Virtual · 9–5pm BST',
     thumbImg: '/iStock-1979289147.jpg',
     href: '#',
   },
@@ -892,6 +894,47 @@ function Option51() {
               <div className="p-6 flex flex-col gap-3">
                 <p style={{ fontSize: '11px', fontWeight: 700, color: choice.locationColor, textTransform: 'uppercase', letterSpacing: '0.1em' }}>{choice.location}</p>
                 <h3 style={{ fontSize: '20px', fontWeight: 700, color: '#303030', lineHeight: 1.25 }}>{choice.title}</h3>
+                <p style={{ fontSize: '14px', color: '#9ea1a3', lineHeight: 1.5 }}>{choice.differentiator}</p>
+                <p style={{ fontSize: '13px', color: '#9ea1a3' }}><span style={{ fontWeight: 600, color: '#303030' }}>Next:</span> {choice.nextDate}</p>
+                <button style={{ marginTop: '4px', width: '100%', padding: '10px', background: '#0b8ecc', color: '#fff', fontSize: '13px', fontWeight: 600, borderRadius: '2px', border: 'none', cursor: 'pointer' }}>View Details</button>
+              </div>
+            </a>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ─── S-V3: Minimal cards + image badge + new program names ───────────────────
+
+const SV3_TITLES: Record<string, string> = {
+  ny:      '3-Day Financial & Valuation Modeling Boot Camp',
+  london:  '5-Day Financial & Valuation Modeling Boot Camp',
+  virtual: '2-Day Prompt-Only Financial Modeling Workshop',
+};
+
+function Option513() {
+  return (
+    <div style={{ background: '#f6f8f9', minHeight: '100vh' }}>
+      <NewHero />
+      <div className="max-w-[1140px] mx-auto px-6 py-10">
+        <div className="grid md:grid-cols-3 gap-6">
+          {CHOICES.map(choice => (
+            <a key={choice.id} href={choice.href} target={choice.href !== '#' ? '_blank' : undefined} rel={choice.href !== '#' ? 'noopener noreferrer' : undefined}
+              className="block bg-white overflow-hidden hover:shadow-md transition-shadow"
+              style={{ border: '1px solid #ededed', borderRadius: '3px', color: '#303030' }}>
+              {/* Image with location badge overlay */}
+              <div style={{ position: 'relative', height: '220px', backgroundImage: `url(${choice.thumbImg})`, backgroundSize: 'cover', backgroundPosition: 'center' }}>
+                <div style={{ position: 'absolute', inset: 0, background: 'rgba(0,0,0,0.25)' }} />
+                <div style={{ position: 'absolute', bottom: '14px', left: '14px' }}>
+                  <span style={{ fontSize: '11px', fontWeight: 700, color: '#fff', textTransform: 'uppercase', letterSpacing: '0.08em', background: choice.locationColor, opacity: 0.9, padding: '5px 12px', borderRadius: '2px', display: 'inline-block' }}>
+                    {choice.location}
+                  </span>
+                </div>
+              </div>
+              <div className="p-6 flex flex-col gap-3">
+                <h3 style={{ fontSize: '18px', fontWeight: 700, color: '#303030', lineHeight: 1.25 }}>{SV3_TITLES[choice.id]}</h3>
                 <p style={{ fontSize: '14px', color: '#9ea1a3', lineHeight: 1.5 }}>{choice.differentiator}</p>
                 <p style={{ fontSize: '13px', color: '#9ea1a3' }}><span style={{ fontWeight: 600, color: '#303030' }}>Next:</span> {choice.nextDate}</p>
                 <button style={{ marginTop: '4px', width: '100%', padding: '10px', background: '#0b8ecc', color: '#fff', fontSize: '13px', fontWeight: 600, borderRadius: '2px', border: 'none', cursor: 'pointer' }}>View Details</button>
@@ -1028,7 +1071,7 @@ function Option52() {
 
 // ─── Editorial helpers ────────────────────────────────────────────────────────
 
-function EditorialCard({ choice, bottomBorder, gradientRgb = '0,0,0', greenTag, longDiff }: { choice: Choice; bottomBorder?: boolean; gradientRgb?: string; greenTag?: boolean; longDiff?: boolean }) {
+function EditorialCard({ choice, bottomBorder, gradientRgb = '0,0,0', greenTag, longDiff, v6 }: { choice: Choice; bottomBorder?: boolean; gradientRgb?: string; greenTag?: boolean; longDiff?: boolean; v6?: boolean }) {
   const gradient = `linear-gradient(to top, rgba(${gradientRgb},1) 0%, rgba(${gradientRgb},1) 32%, rgba(${gradientRgb},0.6) 50%, rgba(${gradientRgb},0) 68%)`;
   return (
     <a href={choice.href} target={choice.href !== '#' ? '_blank' : undefined} rel={choice.href !== '#' ? 'noopener noreferrer' : undefined}
@@ -1040,20 +1083,25 @@ function EditorialCard({ choice, bottomBorder, gradientRgb = '0,0,0', greenTag, 
       <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, padding: '24px' }} className="flex flex-col gap-2.5">
         <div>
           <span style={{ fontSize: '11px', fontWeight: 700, color: (bottomBorder || greenTag) ? '#1a1d22' : '#fff', textTransform: 'uppercase', letterSpacing: '0.08em', background: (bottomBorder || greenTag) ? '#72ffab' : choice.locationColor, opacity: 0.9, padding: '5px 12px', borderRadius: '2px', display: 'inline-block' }}>
-            {choice.location}
+            {v6 ? (choice.badgeLabel ?? choice.location) : choice.location}
           </span>
         </div>
         <h3 style={{ fontSize: '20px', fontWeight: 700, color: '#fff', lineHeight: 1.2 }}>{choice.title}</h3>
-        <div className="flex flex-wrap gap-1.5">
-          {[choice.duration, choice.format].map(tag => <span key={tag} style={{ fontSize: '11px', fontWeight: 600, color: 'rgba(255,255,255,0.85)', background: 'rgba(255,255,255,0.12)', border: '1px solid rgba(255,255,255,0.2)', padding: '3px 9px', borderRadius: '2px' }}>{tag}</span>)}
-        </div>
+        {!v6 && (
+          <div className="flex flex-wrap gap-1.5">
+            {[choice.duration, choice.format].map(tag => <span key={tag} style={{ fontSize: '11px', fontWeight: 600, color: 'rgba(255,255,255,0.85)', background: 'rgba(255,255,255,0.12)', border: '1px solid rgba(255,255,255,0.2)', padding: '3px 9px', borderRadius: '2px' }}>{tag}</span>)}
+          </div>
+        )}
         <p style={{ fontSize: '13px', color: 'rgba(255,255,255,0.6)', lineHeight: 1.5 }}>{longDiff ? choice.detailedDifferentiator : choice.differentiator}</p>
         <div style={{ borderTop: '1px solid rgba(255,255,255,0.15)', paddingTop: '12px', marginTop: '2px' }}>
           <div className="flex items-start justify-between gap-2">
             <div>
               <p style={{ fontSize: '10px', fontWeight: 700, color: 'rgba(255,255,255,0.5)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Next session</p>
               <p style={{ fontSize: '18px', fontWeight: 600, color: '#fff', marginTop: '2px' }}>{choice.nextDate}</p>
-              <p style={{ fontSize: '13px', color: 'rgba(255,255,255,0.45)', marginTop: '2px' }}>+{choice.moreDates} more dates</p>
+              {v6
+                ? <a href={choice.href} style={{ fontSize: '13px', color: '#0b8ecc', marginTop: '2px', display: 'block', textDecoration: 'underline', cursor: 'pointer' }}>+{choice.moreDates} more dates</a>
+                : <p style={{ fontSize: '13px', color: 'rgba(255,255,255,0.45)', marginTop: '2px' }}>+{choice.moreDates} more dates</p>
+              }
             </div>
             <div className="text-right">
               <p style={{ fontSize: '10px', fontWeight: 700, color: 'rgba(255,255,255,0.5)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Price from</p>
@@ -1061,7 +1109,7 @@ function EditorialCard({ choice, bottomBorder, gradientRgb = '0,0,0', greenTag, 
             </div>
           </div>
         </div>
-        <button style={{ marginTop: '4px', padding: '9px 18px', background: '#0b8ecc', color: '#fff', fontSize: '13px', fontWeight: 700, borderRadius: '2px', border: 'none', cursor: 'pointer', alignSelf: 'flex-start' }}>View Details</button>
+        <button style={{ marginTop: '4px', padding: '9px 18px', background: '#0b8ecc', color: '#fff', fontSize: '13px', fontWeight: 700, borderRadius: '2px', border: 'none', cursor: 'pointer', ...(v6 ? { width: '100%' } : { alignSelf: 'flex-start' }) }}>View Details</button>
       </div>
     </a>
   );
@@ -1158,6 +1206,21 @@ function Option545() {
   );
 }
 
+// ─── IF-V6: Streamlined tags, blue dates link, timezone, full-width button ───
+
+function Option546() {
+  return (
+    <div style={{ background: '#f6f8f9', minHeight: '100vh' }}>
+      <NewHero />
+      <div className="max-w-[1140px] mx-auto px-6 py-10">
+        <div className="grid md:grid-cols-3 gap-4">
+          {CHOICES.map(choice => <EditorialCard key={choice.id} choice={choice} gradientRgb="10,45,74" greenTag longDiff v6 />)}
+        </div>
+      </div>
+    </div>
+  );
+}
+
 // ─── Prototype switcher ───────────────────────────────────────────────────────
 
 type CategoryGroup = { categoryId: string; categoryLabel: string; versions: { id: OptionId; label: string }[] };
@@ -1177,8 +1240,9 @@ const CATEGORY_GROUPS: CategoryGroup[] = [
     categoryId: 'simple',
     categoryLabel: 'Simple',
     versions: [
-      { id: '5.1', label: 'S-V1' },
-      { id: '5.2', label: 'S-V2' },
+      { id: '5.1',   label: 'S-V1' },
+      { id: '5.2',   label: 'S-V2' },
+      { id: '5.1.3', label: 'S-V3' },
     ],
   },
   {
@@ -1190,6 +1254,7 @@ const CATEGORY_GROUPS: CategoryGroup[] = [
       { id: '5.4.3', label: 'IF-V3' },
       { id: '5.4.4', label: 'IF-V4' },
       { id: '5.4.5', label: 'IF-V5' },
+      { id: '5.4.6', label: 'IF-V6' },
     ],
   },
 ];
@@ -1277,6 +1342,7 @@ export default function Page() {
       {active === '4'     && <Option4 />}
       {active === '5.5'   && <Option55 />}
       {active === '5.1'   && <Option51 />}
+      {active === '5.1.3' && <Option513 />}
       {active === '5.3'   && <Option53 />}
       {active === '5.3.2' && <Option532 />}
       {active === '5.2'   && <Option52 />}
@@ -1285,6 +1351,7 @@ export default function Page() {
       {active === '5.4.3' && <Option543 />}
       {active === '5.4.4' && <Option544 />}
       {active === '5.4.5' && <Option545 />}
+      {active === '5.4.6' && <Option546 />}
       {active === '1'     && <Option1 />}
       {active === '2'     && <Option2 />}
       {active === '3'     && <Option3 />}
