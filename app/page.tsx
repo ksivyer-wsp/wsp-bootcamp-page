@@ -15,7 +15,7 @@ import { useState } from 'react';
 
 type LocationCode = 'new-york' | 'london';
 type LocationFilter = 'all' | LocationCode;
-type OptionId = '1' | '2' | '3' | '4' | '5.1' | '5.1.3' | '5.2' | '5.3' | '5.3.2' | '5.4' | '5.4.2' | '5.4.3' | '5.4.4' | '5.4.5' | '5.4.6' | '5.5';
+type OptionId = '1' | '2' | '3' | '4' | '5.1' | '5.1.3' | '5.2' | '5.3' | '5.3.2' | '5.4' | '5.4.2' | '5.4.3' | '5.4.4' | '5.4.5' | '5.4.6' | '5.4.7' | '5.5';
 
 type Camp = {
   id: string;
@@ -748,6 +748,7 @@ type Choice = {
   format: string;
   focus: string[];
   price: string;
+  priceUSD: string;
   moreDates: number;
   badgeLabel?: string;
   thumbImg: string;
@@ -769,6 +770,7 @@ const CHOICES: Choice[] = [
     format: 'In-Person',
     focus: ['Financial Modeling', 'Valuation', 'M&A'],
     price: 'From $3,500',
+    priceUSD: 'From $3,500',
     moreDates: 5,
     thumbImg: '/iStock-1406960186.jpg',
     href: 'https://www.wallstreetprep.com/seminar/financial-and-valuation-modeling/',
@@ -787,6 +789,7 @@ const CHOICES: Choice[] = [
     format: 'In-Person',
     focus: ['Financial Modeling', 'Valuation', 'M&A', 'LBO'],
     price: 'From £3,200',
+    priceUSD: 'From $4,100',
     moreDates: 4,
     thumbImg: '/iStock-2194509213.jpg',
     href: 'https://www.fe.training/product/public-courses/comprehensive-modeling-and-valuation-masterclasses-july-london-copy/',
@@ -805,6 +808,7 @@ const CHOICES: Choice[] = [
     format: 'Virtual',
     focus: ['AI Modeling', 'Valuation'],
     price: 'From £1,500',
+    priceUSD: 'From $1,900',
     moreDates: 2,
     badgeLabel: 'Virtual · 9–5pm BST',
     thumbImg: '/iStock-1979289147.jpg',
@@ -1221,6 +1225,66 @@ function Option546() {
   );
 }
 
+// ─── IF-V7: Streamlined, hero-matched gradient, USD prices ───────────────────
+
+const V7_TITLES: Record<string, string> = {
+  ny:      '3-Day Financial Valuation Modeling Boot Camp',
+  london:  '5-Day Financial Valuation Modeling Boot Camp',
+  virtual: '2-Day Prompt-Only Financial Modeling Boot Camp',
+};
+
+function Option547() {
+  return (
+    <div style={{ background: '#f6f8f9', minHeight: '100vh' }}>
+      <NewHero />
+      <div className="max-w-[1140px] mx-auto px-6 py-10">
+        <div className="grid md:grid-cols-3 gap-4">
+          {CHOICES.map(choice => {
+            // Hero gradient is rgba(20,24,30,0.78) — match that dark tint
+            const gradient = 'linear-gradient(to top, rgba(20,24,30,1) 0%, rgba(20,24,30,1) 32%, rgba(20,24,30,0.6) 50%, rgba(20,24,30,0) 68%)';
+            return (
+              <a key={choice.id} href={choice.href} target={choice.href !== '#' ? '_blank' : undefined} rel={choice.href !== '#' ? 'noopener noreferrer' : undefined}
+                className="block relative overflow-hidden group"
+                style={{ height: '500px', borderRadius: '3px' }}>
+                {/* Image — top 70% */}
+                <div className="absolute transition-transform duration-500 group-hover:scale-105"
+                  style={{ top: 0, left: 0, right: 0, height: '70%', backgroundImage: `url(${choice.thumbImg})`, backgroundSize: 'cover', backgroundPosition: 'center center' }} />
+                {/* Gradient — matches hero dark tint */}
+                <div style={{ position: 'absolute', inset: 0, background: gradient }} />
+                {/* Content */}
+                <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, padding: '22px' }} className="flex flex-col gap-2">
+                  {/* Location badge — WSP green, no timezone */}
+                  <div>
+                    <span style={{ fontSize: '11px', fontWeight: 700, color: '#1a1d22', textTransform: 'uppercase', letterSpacing: '0.08em', background: '#72ffab', opacity: 0.9, padding: '5px 12px', borderRadius: '2px', display: 'inline-block' }}>
+                      {choice.location}
+                    </span>
+                  </div>
+                  {/* Title */}
+                  <h3 style={{ fontSize: '20px', fontWeight: 700, color: '#fff', lineHeight: 1.2 }}>{V7_TITLES[choice.id]}</h3>
+                  {/* 1-line differentiator */}
+                  <p style={{ fontSize: '13px', color: 'rgba(255,255,255,0.6)', lineHeight: 1.4 }}>{choice.differentiator}</p>
+                  {/* Date + price — no labels */}
+                  <div style={{ borderTop: '1px solid rgba(255,255,255,0.15)', paddingTop: '10px', marginTop: '2px' }}>
+                    <div className="flex items-baseline justify-between gap-2">
+                      <span style={{ fontSize: '18px', fontWeight: 600, color: '#fff' }}>{choice.nextDate}</span>
+                      <span style={{ fontSize: '18px', fontWeight: 600, color: '#fff' }}>{choice.priceUSD.replace('From ', '')}</span>
+                    </div>
+                    <span style={{ fontSize: '12px', color: 'rgba(255,255,255,0.4)', marginTop: '2px', display: 'block' }}>+{choice.moreDates} more dates</span>
+                  </div>
+                  {/* Full-width blue button */}
+                  <button style={{ marginTop: '6px', width: '100%', padding: '9px', background: '#0b8ecc', color: '#fff', fontSize: '13px', fontWeight: 700, borderRadius: '2px', border: 'none', cursor: 'pointer' }}>
+                    View Details
+                  </button>
+                </div>
+              </a>
+            );
+          })}
+        </div>
+      </div>
+    </div>
+  );
+}
+
 // ─── Prototype switcher ───────────────────────────────────────────────────────
 
 type CategoryGroup = { categoryId: string; categoryLabel: string; versions: { id: OptionId; label: string }[] };
@@ -1255,6 +1319,7 @@ const CATEGORY_GROUPS: CategoryGroup[] = [
       { id: '5.4.4', label: 'IF-V4' },
       { id: '5.4.5', label: 'IF-V5' },
       { id: '5.4.6', label: 'IF-V6' },
+      { id: '5.4.7', label: 'IF-V7' },
     ],
   },
 ];
@@ -1352,6 +1417,7 @@ export default function Page() {
       {active === '5.4.4' && <Option544 />}
       {active === '5.4.5' && <Option545 />}
       {active === '5.4.6' && <Option546 />}
+      {active === '5.4.7' && <Option547 />}
       {active === '1'     && <Option1 />}
       {active === '2'     && <Option2 />}
       {active === '3'     && <Option3 />}
