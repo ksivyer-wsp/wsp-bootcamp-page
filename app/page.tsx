@@ -769,8 +769,8 @@ const CHOICES: Choice[] = [
     duration: '3 Days',
     format: 'In-Person',
     focus: ['Financial Modeling', 'Valuation', 'M&A'],
-    price: 'From $3,500',
-    priceUSD: 'From $3,500',
+    price: 'From $2,999',
+    priceUSD: 'From $2,999',
     moreDates: 5,
     thumbImg: '/iStock-1406960186.jpg',
     href: 'https://www.wallstreetprep.com/seminar/financial-and-valuation-modeling/',
@@ -789,7 +789,7 @@ const CHOICES: Choice[] = [
     format: 'In-Person',
     focus: ['Financial Modeling', 'Valuation', 'M&A', 'LBO'],
     price: 'From £3,200',
-    priceUSD: 'From $4,100',
+    priceUSD: 'From $3,999',
     moreDates: 4,
     thumbImg: '/iStock-2194509213.jpg',
     href: 'https://www.fe.training/product/public-courses/comprehensive-modeling-and-valuation-masterclasses-july-london-copy/',
@@ -808,11 +808,11 @@ const CHOICES: Choice[] = [
     format: 'Virtual',
     focus: ['AI Modeling', 'Valuation'],
     price: 'From £1,500',
-    priceUSD: 'From $1,900',
+    priceUSD: 'From $1,339',
     moreDates: 2,
     badgeLabel: 'Virtual · 9–5pm BST',
     thumbImg: '/iStock-1979289147.jpg',
-    href: '#',
+    href: 'https://www.fe.training/product/online-live-courses/claude-first-financial-modeling-valuation-bst-july/',
   },
 ];
 
@@ -1269,7 +1269,7 @@ function Option547() {
                       <span style={{ fontSize: '18px', fontWeight: 600, color: '#fff' }}>{choice.nextDate}</span>
                       <span style={{ fontSize: '18px', fontWeight: 600, color: '#fff' }}>{choice.priceUSD.replace('From ', '')}</span>
                     </div>
-                    <span style={{ fontSize: '12px', color: 'rgba(255,255,255,0.4)', marginTop: '2px', display: 'block' }}>+{choice.moreDates} more dates</span>
+                    <span style={{ fontSize: '12px', color: '#0b8ecc', marginTop: '2px', display: 'block' }}>+{choice.moreDates} more dates</span>
                   </div>
                   {/* Full-width blue button */}
                   <button style={{ marginTop: '6px', width: '100%', padding: '9px', background: '#0b8ecc', color: '#fff', fontSize: '13px', fontWeight: 700, borderRadius: '2px', border: 'none', cursor: 'pointer' }}>
